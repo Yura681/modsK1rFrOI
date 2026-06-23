@@ -1,687 +1,1118 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Доступ к модам</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Доступ к модам</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: #0b0e14;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      background-image: radial-gradient(circle at 20% 30%, #1a2a3f 0%, #0a0f16 90%);
-      background-attachment: fixed;
-    }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #0b0e14;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, #1a2a3f 0%, #0a0f16 90%);
+            background-attachment: fixed;
+        }
 
-    .app {
-      max-width: 520px;
-      width: 100%;
-      background: rgba(16, 22, 32, 0.78);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 48px;
-      padding: 28px 22px 30px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(80, 130, 200, 0.15) inset;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-      transition: 0.3s;
-    }
+        .app {
+            max-width: 560px;
+            width: 100%;
+            background: rgba(16, 22, 32, 0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 48px;
+            padding: 28px 22px 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(80, 130, 200, 0.15) inset;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.3s;
+        }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 8px 12px;
-    }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+        }
 
-    .header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #d6eaff;
-      letter-spacing: -0.3px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #d6eaff;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .header h1 span {
-      background: #1f3146;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 2px 16px;
-      border-radius: 40px;
-      color: #9cb9dd;
-      letter-spacing: 0.2px;
-    }
+        .header h1 span {
+            background: #1f3146;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 2px 16px;
+            border-radius: 40px;
+            color: #9cb9dd;
+            letter-spacing: 0.2px;
+        }
 
-    .header .byline {
-      font-size: 13px;
-      font-weight: 500;
-      color: #7d8faa;
-      background: #1a2535;
-      padding: 6px 18px;
-      border-radius: 40px;
-      border: 1px solid #2d4058;
-      letter-spacing: 0.2px;
-    }
+        .header .byline {
+            font-size: 13px;
+            font-weight: 500;
+            color: #7d8faa;
+            background: #1a2535;
+            padding: 6px 18px;
+            border-radius: 40px;
+            border: 1px solid #2d4058;
+            letter-spacing: 0.2px;
+        }
 
-    .code-display {
-      background: rgba(10, 16, 26, 0.7);
-      border-radius: 40px;
-      padding: 20px 18px 18px;
-      margin-bottom: 22px;
-      border: 1px solid #2d3f54;
-      box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.6);
-      text-align: center;
-    }
+        .instructions {
+            background: rgba(10, 16, 26, 0.5);
+            border-radius: 24px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
+            border: 1px solid #2a3d55;
+            border-left: 3px solid #4a7cb0;
+        }
 
-    .code-display .label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      color: #7a93b0;
-      font-weight: 600;
-    }
+        .instructions h3 {
+            color: #b8d0ec;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .code-display .daily-code {
-      font-size: 42px;
-      font-weight: 700;
-      color: #dcebff;
-      letter-spacing: 6px;
-      margin-top: 6px;
-      text-shadow: 0 0 20px #2f6aad55;
-      font-family: 'Inter', monospace;
-      word-break: break-all;
-      transition: 0.2s;
-    }
+        .instructions ol {
+            color: #9bb2cf;
+            font-size: 14px;
+            line-height: 1.7;
+            padding-left: 20px;
+            margin: 0;
+        }
 
-    .code-display .hint {
-      font-size: 12px;
-      color: #5b7696;
-      background: #141f2d;
-      display: inline-block;
-      padding: 4px 18px;
-      border-radius: 40px;
-      margin-top: 8px;
-      border: 1px solid #26394e;
-    }
+        .instructions ol li {
+            padding: 2px 0;
+        }
 
-    .admin-panel {
-      background: rgba(10, 16, 26, 0.5);
-      border-radius: 30px;
-      padding: 18px 16px 16px;
-      margin: 16px 0 18px;
-      border: 1px solid #2d3f54;
-    }
+        .instructions ol li strong {
+            color: #c8defa;
+        }
 
-    .admin-panel .admin-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #a1b9d4;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .code-display {
+            background: rgba(10, 16, 26, 0.7);
+            border-radius: 40px;
+            padding: 20px 18px 18px;
+            margin-bottom: 22px;
+            border: 1px solid #2d3f54;
+            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
 
-    .admin-panel .admin-title span {
-      background: #1f3146;
-      padding: 2px 16px;
-      border-radius: 40px;
-      font-size: 12px;
-      color: #b8d0ec;
-    }
+        .code-display .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #7a93b0;
+            font-weight: 600;
+        }
 
-    .admin-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+        .code-display .daily-code {
+            font-size: 42px;
+            font-weight: 700;
+            color: #dcebff;
+            letter-spacing: 6px;
+            margin-top: 6px;
+            text-shadow: 0 0 20px #2f6aad55;
+            font-family: 'Inter', monospace;
+            word-break: break-all;
+            transition: 0.2s;
+        }
 
-    .admin-row input {
-      flex: 2 1 140px;
-      background: #0b121b;
-      border: 1px solid #31455d;
-      border-radius: 60px;
-      padding: 14px 20px;
-      font-size: 16px;
-      font-weight: 500;
-      color: #e6f0ff;
-      outline: none;
-      transition: 0.2s;
-      font-family: 'Inter', monospace;
-      letter-spacing: 0.5px;
-    }
+        .code-display .hint {
+            font-size: 12px;
+            color: #5b7696;
+            background: #141f2d;
+            display: inline-block;
+            padding: 4px 18px;
+            border-radius: 40px;
+            margin-top: 8px;
+            border: 1px solid #26394e;
+        }
 
-    .admin-row input:focus {
-      border-color: #5b8bc9;
-      box-shadow: 0 0 0 4px #1d3d6355;
-    }
+        .admin-panel {
+            background: rgba(10, 16, 26, 0.5);
+            border-radius: 30px;
+            padding: 18px 16px 16px;
+            margin: 16px 0 18px;
+            border: 1px solid #2d3f54;
+        }
 
-    .admin-row input::placeholder {
-      color: #425a77;
-      font-weight: 400;
-      font-size: 14px;
-    }
+        .admin-panel .admin-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #a1b9d4;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .admin-row button {
-      flex: 1 0 auto;
-      background: #1f344d;
-      border: none;
-      border-radius: 60px;
-      padding: 0 24px;
-      font-weight: 600;
-      font-size: 15px;
-      color: #d6e6ff;
-      cursor: pointer;
-      transition: 0.15s;
-      box-shadow: 0 4px 0 #0a141f;
-      border: 1px solid #3a5b7a;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
+        .admin-panel .admin-title span {
+            background: #1f3146;
+            padding: 2px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            color: #b8d0ec;
+        }
 
-    .admin-row button:active {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 #0a141f;
-    }
+        .admin-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-    .admin-row button:hover {
-      background: #2a4666;
-      border-color: #5a84b0;
-    }
+        .admin-row input {
+            flex: 2 1 140px;
+            background: #0b121b;
+            border: 1px solid #31455d;
+            border-radius: 60px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #e6f0ff;
+            outline: none;
+            transition: 0.2s;
+            font-family: 'Inter', monospace;
+            letter-spacing: 0.5px;
+        }
 
-    .user-access {
-      background: rgba(10, 16, 26, 0.5);
-      border-radius: 30px;
-      padding: 18px 16px 16px;
-      margin: 16px 0 14px;
-      border: 1px solid #2d3f54;
-    }
+        .admin-row input:focus {
+            border-color: #5b8bc9;
+            box-shadow: 0 0 0 4px #1d3d6355;
+        }
 
-    .user-access .user-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
+        .admin-row input::placeholder {
+            color: #425a77;
+            font-weight: 400;
+            font-size: 14px;
+        }
 
-    .user-access .user-title strong {
-      color: #c2d7f2;
-      font-weight: 500;
-      font-size: 15px;
-    }
+        .admin-row button {
+            flex: 1 0 auto;
+            background: #1f344d;
+            border: none;
+            border-radius: 60px;
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #d6e6ff;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 0 #0a141f;
+            border: 1px solid #3a5b7a;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
 
-    .user-access .user-title small {
-      color: #6b87a6;
-      font-size: 12px;
-      background: #1a283a;
-      padding: 2px 16px;
-      border-radius: 40px;
-    }
+        .admin-row button:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #0a141f;
+        }
 
-    .user-input-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+        .admin-row button:hover {
+            background: #2a4666;
+            border-color: #5a84b0;
+        }
 
-    .user-input-group input {
-      flex: 2 1 140px;
-      background: #0b121b;
-      border: 1px solid #31455d;
-      border-radius: 60px;
-      padding: 14px 20px;
-      font-size: 16px;
-      font-weight: 500;
-      color: #e6f0ff;
-      outline: none;
-      transition: 0.2s;
-      font-family: 'Inter', monospace;
-      letter-spacing: 0.5px;
-    }
+        .admin-links-panel {
+            background: rgba(10, 16, 26, 0.5);
+            border-radius: 30px;
+            padding: 18px 16px 16px;
+            margin: 16px 0 18px;
+            border: 1px solid #2d6a4a;
+            display: none;
+        }
 
-    .user-input-group input:focus {
-      border-color: #5b8bc9;
-      box-shadow: 0 0 0 4px #1d3d6355;
-    }
+        .admin-links-panel.visible {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
 
-    .user-input-group input::placeholder {
-      color: #425a77;
-      font-weight: 400;
-      font-size: 14px;
-    }
+        @keyframes fadeUp {
+            0% { opacity: 0.4; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-    .user-input-group button {
-      flex: 1 0 auto;
-      background: #1f344d;
-      border: none;
-      border-radius: 60px;
-      padding: 0 24px;
-      font-weight: 600;
-      font-size: 15px;
-      color: #d6e6ff;
-      cursor: pointer;
-      transition: 0.15s;
-      box-shadow: 0 4px 0 #0a141f;
-      border: 1px solid #3a5b7a;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
+        .admin-links-panel .links-title {
+            color: #86d4b0;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .user-input-group button:active {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 #0a141f;
-    }
+        .admin-links-panel .links-title small {
+            color: #5b8a7a;
+            font-weight: 400;
+            font-size: 12px;
+        }
 
-    .user-input-group button:hover {
-      background: #2a4666;
-      border-color: #5a84b0;
-    }
+        .link-edit-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
 
-    .link-box {
-      background: rgba(10, 16, 26, 0.6);
-      border-radius: 40px;
-      padding: 12px 16px 12px 18px;
-      margin: 18px 0 6px;
-      border: 1px solid #2d3f54;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+        .link-edit-row input {
+            flex: 1;
+            background: #0b121b;
+            border: 1px solid #2d5a4a;
+            border-radius: 60px;
+            padding: 12px 18px;
+            font-size: 14px;
+            color: #dcebff;
+            outline: none;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            min-width: 120px;
+        }
 
-    .link-box .link-label {
-      color: #7b96b5;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
+        .link-edit-row input:focus {
+            border-color: #4a9a7a;
+            box-shadow: 0 0 0 3px #1d4d3d55;
+        }
 
-    .link-box .link-url {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 500;
-      color: #b8ceec;
-      word-break: break-all;
-      background: #121e2d;
-      padding: 8px 16px;
-      border-radius: 60px;
-      border: 1px solid #2a4058;
-      text-decoration: none;
-      transition: 0.2s;
-      min-width: 100px;
-      font-family: 'Inter', system-ui, sans-serif;
-    }
+        .link-edit-row input::placeholder {
+            color: #3a5a4a;
+            font-size: 13px;
+        }
 
-    .link-box .link-url.locked {
-      color: #60758e;
-      border-color: #2a3a4a;
-      background: #101b28;
-      pointer-events: none;
-      opacity: 0.6;
-    }
+        .link-edit-row button {
+            background: #1a3d30;
+            border: none;
+            border-radius: 60px;
+            padding: 0 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #b2f0d0;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #2b7353;
+            box-shadow: 0 3px 0 #0a1f15;
+            height: 44px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-    .link-box .link-url.unlocked {
-      color: #b8d6ff;
-      border-color: #4a7cb0;
-      background: #1a2d44;
-      pointer-events: auto;
-      box-shadow: 0 0 16px #1f4b7a33;
-    }
+        .link-edit-row button:active {
+            transform: translateY(3px);
+            box-shadow: 0 0px 0 #0a1f15;
+        }
 
-    .link-box .link-url.unlocked:hover {
-      background: #233d5a;
-      border-color: #5f92cc;
-    }
+        .link-edit-row button:hover {
+            background: #2a5a45;
+            border-color: #3a8a6a;
+        }
 
-    .copy-btn {
-      background: #1f344d;
-      border: none;
-      border-radius: 40px;
-      padding: 8px 18px;
-      font-weight: 600;
-      font-size: 13px;
-      color: #cadeff;
-      cursor: pointer;
-      transition: 0.15s;
-      border: 1px solid #3a5b7a;
-      box-shadow: 0 3px 0 #0a141f;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      height: 44px;
-    }
+        .link-edit-row button.add-link {
+            background: #1a3d3a;
+            border-color: #2a6a5a;
+        }
 
-    .copy-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 0px 0 #0a141f;
-    }
+        .link-edit-row button.add-link:hover {
+            background: #2a5a55;
+            border-color: #3a8a7a;
+        }
 
-    .copy-btn:hover {
-      background: #2a4666;
-      border-color: #5a84b0;
-    }
+        .links-list {
+            margin-top: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
 
-    .copy-btn.copied {
-      background: #1d4a3a;
-      border-color: #3a8a6a;
-      color: #b2f0d0;
-    }
+        .links-list::-webkit-scrollbar {
+            width: 4px;
+        }
 
-    .status-badge {
-      font-size: 12px;
-      padding: 4px 14px;
-      border-radius: 40px;
-      background: #1a283a;
-      color: #819bb9;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      border: 1px solid #2d4058;
-    }
+        .links-list::-webkit-scrollbar-track {
+            background: #0b121b;
+            border-radius: 10px;
+        }
 
-    .status-badge.active {
-      background: #1a3d30;
-      color: #86d4b0;
-      border-color: #2b7353;
-    }
+        .links-list::-webkit-scrollbar-thumb {
+            background: #2d5a4a;
+            border-radius: 10px;
+        }
 
-    .footer-note {
-      text-align: center;
-      margin-top: 22px;
-      font-size: 12px;
-      color: #405771;
-      letter-spacing: 0.4px;
-      border-top: 1px solid #1d2b3b;
-      padding-top: 18px;
-    }
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #0b121b;
+            padding: 8px 14px;
+            border-radius: 40px;
+            margin-bottom: 6px;
+            border: 1px solid #1d3a30;
+        }
 
-    .footer-note span {
-      color: #6b8bb0;
-      font-weight: 500;
-    }
+        .link-item .link-url-text {
+            flex: 1;
+            font-size: 13px;
+            color: #b8d0ec;
+            word-break: break-all;
+            font-family: 'Inter', monospace;
+            user-select: none;
+            -webkit-user-select: none;
+            filter: blur(4px);
+            opacity: 0.7;
+        }
 
-    .admin-hint-hidden {
-      display: none;
-    }
+        .link-item .link-actions {
+            display: flex;
+            gap: 6px;
+        }
 
-    @media (max-width: 460px) {
-      .app { padding: 18px 14px 22px; }
-      .header h1 { font-size: 18px; }
-      .code-display .daily-code { font-size: 32px; letter-spacing: 4px; }
-      .admin-row button, .user-input-group button { font-size: 14px; height: 46px; }
-      .link-box { flex-direction: column; align-items: stretch; }
-      .copy-btn { justify-content: center; }
-    }
-  </style>
+        .link-item .link-actions button {
+            background: transparent;
+            border: none;
+            color: #5b8a7a;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .link-item .link-actions button:hover {
+            background: #1a2d25;
+            color: #86d4b0;
+        }
+
+        .link-item .link-actions button.del:hover {
+            background: #2a1a1a;
+            color: #e87070;
+        }
+
+        .user-access {
+            background: rgba(10, 16, 26, 0.5);
+            border-radius: 30px;
+            padding: 18px 16px 16px;
+            margin: 16px 0 14px;
+            border: 1px solid #2d3f54;
+        }
+
+        .user-access .user-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .user-access .user-title strong {
+            color: #c2d7f2;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .user-access .user-title small {
+            color: #6b87a6;
+            font-size: 12px;
+            background: #1a283a;
+            padding: 2px 16px;
+            border-radius: 40px;
+        }
+
+        .user-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .user-input-group input {
+            flex: 2 1 140px;
+            background: #0b121b;
+            border: 1px solid #31455d;
+            border-radius: 60px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #e6f0ff;
+            outline: none;
+            transition: 0.2s;
+            font-family: 'Inter', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .user-input-group input:focus {
+            border-color: #5b8bc9;
+            box-shadow: 0 0 0 4px #1d3d6355;
+        }
+
+        .user-input-group input::placeholder {
+            color: #425a77;
+            font-weight: 400;
+            font-size: 14px;
+        }
+
+        .user-input-group button {
+            flex: 1 0 auto;
+            background: #1f344d;
+            border: none;
+            border-radius: 60px;
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #d6e6ff;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 0 #0a141f;
+            border: 1px solid #3a5b7a;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .user-input-group button:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #0a141f;
+        }
+
+        .user-input-group button:hover {
+            background: #2a4666;
+            border-color: #5a84b0;
+        }
+
+        .links-container {
+            background: rgba(10, 16, 26, 0.6);
+            border-radius: 30px;
+            padding: 16px 16px 12px;
+            margin: 18px 0 6px;
+            border: 1px solid #2d3f54;
+        }
+
+        .links-container .links-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .links-container .links-header span {
+            color: #7b96b5;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .links-container .links-header .copy-all-btn {
+            background: #1f344d;
+            border: none;
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-weight: 500;
+            font-size: 12px;
+            color: #cadeff;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #3a5b7a;
+            box-shadow: 0 2px 0 #0a141f;
+        }
+
+        .links-container .links-header .copy-all-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 0px 0 #0a141f;
+        }
+
+        .links-container .links-header .copy-all-btn:hover {
+            background: #2a4666;
+            border-color: #5a84b0;
+        }
+
+        .link-item-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #0b121b;
+            padding: 8px 14px 8px 18px;
+            border-radius: 40px;
+            margin-bottom: 8px;
+            border: 1px solid #1d2f40;
+        }
+
+        .link-item-display .link-num {
+            color: #4a6a8a;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 24px;
+        }
+
+        .link-item-display .link-url-text {
+            flex: 1;
+            font-size: 13px;
+            font-family: 'Inter', monospace;
+            word-break: break-all;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: default;
+            position: relative;
+        }
+
+        .link-item-display .link-url-text.locked {
+            color: #3a4a5a;
+            filter: blur(6px);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .link-item-display .link-url-text.unlocked {
+            color: #b8d6ff;
+            filter: blur(0px);
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .link-item-display .copy-single-btn {
+            background: transparent;
+            border: 1px solid #2d4058;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: #8aa9c8;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .link-item-display .copy-single-btn:hover:not(:disabled) {
+            background: #1a2d44;
+            border-color: #4a7cb0;
+            color: #cadeff;
+        }
+
+        .link-item-display .copy-single-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .link-item-display .copy-single-btn.copied {
+            background: #1a3d30;
+            border-color: #2b7353;
+            color: #86d4b0;
+        }
+
+        .link-item-display .status-badge-small {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 40px;
+            background: #1a283a;
+            color: #60758e;
+            border: 1px solid #2a3a4a;
+            white-space: nowrap;
+        }
+
+        .link-item-display .status-badge-small.active {
+            background: #1a3d30;
+            color: #86d4b0;
+            border-color: #2b7353;
+        }
+
+        .no-links {
+            color: #4a6a8a;
+            font-size: 13px;
+            text-align: center;
+            padding: 12px 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 12px;
+            color: #405771;
+            letter-spacing: 0.4px;
+            border-top: 1px solid #1d2b3b;
+            padding-top: 18px;
+        }
+
+        .footer-note span {
+            color: #6b8bb0;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 40px;
+            background: #1a283a;
+            color: #819bb9;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            border: 1px solid #2d4058;
+        }
+
+        .status-badge.active {
+            background: #1a3d30;
+            color: #86d4b0;
+            border-color: #2b7353;
+        }
+
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        @media (max-width: 460px) {
+            .app { padding: 18px 14px 22px; }
+            .header h1 { font-size: 18px; }
+            .code-display .daily-code { font-size: 32px; letter-spacing: 4px; }
+            .admin-row button, .user-input-group button { font-size: 14px; height: 46px; }
+            .link-edit-row { flex-direction: column; }
+            .link-edit-row button { height: 40px; }
+            .link-item-display { flex-wrap: wrap; }
+        }
+    </style>
 </head>
 <body>
 <div class="app" id="app">
-  <!-- Шапка -->
-  <div class="header">
-    <h1>📦 Доступ к модам <span>v2</span></h1>
-    <div class="byline">By TRAIN_MAN | K1rFrOI</div>
-  </div>
-
-  <!-- Ежедневный код -->
-  <div class="code-display">
-    <div class="label">🎯 сегодняшний код доступа</div>
-    <div class="daily-code" id="dailyCodeText">••••••</div>
-    <div class="hint" id="adminHint">🔑 только для администратора</div>
-  </div>
-
-  <!-- Админ-панель с кнопкой "Войти как K1rFrOI" (подсказка скрыта) -->
-  <div class="admin-panel">
-    <div class="admin-title">
-      ⚙️ Администратор <span>k1rFrOI</span>
+    <div class="header">
+        <h1>📦 Доступ к модам <span>v2</span></h1>
+        <div class="byline">By TRAIN_MAN | K1rFrOI</div>
     </div>
-    <div class="admin-row">
-      <input type="password" id="adminPassInput" placeholder="Код админа" autocomplete="off">
-      <button id="adminLoginBtn">Войти как K1rFrOI</button>
-    </div>
-    <!-- Подсказка с кодом полностью удалена -->
-  </div>
 
-  <!-- Пользовательский доступ -->
-  <div class="user-access">
-    <div class="user-title">
-      <strong>👤 Посетитель</strong>
-      <small>введите код доступа</small>
+    <div class="instructions">
+        <h3>📖 Как получить доступ</h3>
+        <ol>
+            <li><strong>Спросите код</strong> перед съёмками или посмотрите его в канале <strong>"моды ебаные"</strong></li>
+            <li><strong>Введите код</strong> в поле ниже и нажмите «Войти»</li>
+            <li><strong>Нажмите «Копировать»</strong> рядом со ссылкой — готово! 🚀</li>
+        </ol>
     </div>
-    <div class="user-input-group">
-      <input type="text" id="userCodeInput" placeholder="Код доступа" autocomplete="off">
-      <button id="userUnlockBtn">🔓 Войти</button>
+
+    <div class="code-display">
+        <div class="label">🎯 сегодняшний код доступа</div>
+        <div class="daily-code" id="dailyCodeText">••••••</div>
+        <div class="hint" id="adminHint">🔑 только для администратора</div>
     </div>
-  </div>
 
-  <!-- Ссылка + кнопка копирования -->
-  <div class="link-box">
-    <span class="link-label">📁 ссылка</span>
-    <a id="targetLink" class="link-url locked" href="#" target="_blank">моды заблокированы</a>
-    <button class="copy-btn" id="copyLinkBtn">📋 Копировать</button>
-    <span class="status-badge" id="lockStatus">🔒 locked</span>
-  </div>
+    <div class="admin-panel">
+        <div class="admin-title">
+            ⚙️ Администратор <span>k1rFrOI</span>
+        </div>
+        <div class="admin-row">
+            <input type="password" id="adminPassInput" placeholder="Код админа" autocomplete="off">
+            <button id="adminLoginBtn">Войти как K1rFrOI</button>
+        </div>
+    </div>
 
-  <div class="footer-note">
-    <span>Доступ к модам</span> · код обновляется каждый день
-  </div>
+    <div class="admin-links-panel" id="adminLinksPanel">
+        <div class="links-title">
+            🔗 Управление ссылками <small>добавляй, удаляй, меняй</small>
+        </div>
+        <div class="link-edit-row">
+            <input type="text" id="newLinkInput" placeholder="Вставьте ссылку..." autocomplete="off">
+            <button class="add-link" id="addLinkBtn">➕ Добавить</button>
+        </div>
+        <div class="links-list" id="adminLinksList"></div>
+    </div>
+
+    <div class="user-access">
+        <div class="user-title">
+            <strong>👤 Посетитель</strong>
+            <small>введите код доступа</small>
+        </div>
+        <div class="user-input-group">
+            <input type="text" id="userCodeInput" placeholder="Код доступа" autocomplete="off">
+            <button id="userUnlockBtn">🔓 Войти</button>
+        </div>
+    </div>
+
+    <div class="links-container">
+        <div class="links-header">
+            <span>📁 доступные ссылки</span>
+            <button class="copy-all-btn" id="copyAllBtn">📋 Копировать все</button>
+        </div>
+        <div id="userLinksList"></div>
+    </div>
+
+    <div class="footer-note">
+        <span>Доступ к модам</span> · код обновляется каждый день
+    </div>
 </div>
 
 <script>
-  (function() {
-    "use strict";
+    (function() {
+        "use strict";
 
-    // ---------- КОНФИГ ----------
-    const ADMIN_PASSWORD = "1894561";
-    const TARGET_URL = "https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link";
-    const DAILY_SECRET = "K1rFrOI";
+        const ADMIN_PASSWORD = "1894561";
+        const DAILY_SECRET = "K1rFrOI";
 
-    // DOM
-    const dailyCodeSpan = document.getElementById('dailyCodeText');
-    const adminHint = document.getElementById('adminHint');
-    const adminPassInput = document.getElementById('adminPassInput');
-    const adminLoginBtn = document.getElementById('adminLoginBtn');
-    const userCodeInput = document.getElementById('userCodeInput');
-    const userUnlockBtn = document.getElementById('userUnlockBtn');
-    const targetLink = document.getElementById('targetLink');
-    const lockStatus = document.getElementById('lockStatus');
-    const copyBtn = document.getElementById('copyLinkBtn');
+        const DEFAULT_LINKS = [
+            "https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"
+        ];
 
-    // состояние
-    let isAdmin = false;
-    let isUnlocked = false;
+        let links = [...DEFAULT_LINKS];
+        let isAdmin = false;
+        let isUnlocked = false;
 
-    // ---------- ГЕНЕРАЦИЯ КОДА ----------
-    function getDailyCode() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const day = String(now.getDate()).padStart(2, '0');
-      const dateStr = `${year}-${month}-${day}`;
-      const base = dateStr + DAILY_SECRET;
-      let hash = 0;
-      for (let i = 0; i < base.length; i++) {
-        const char = base.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;
-      }
-      let code = Math.abs(hash).toString();
-      while (code.length < 6) code = '0' + code;
-      return code.slice(0, 6);
-    }
+        const dailyCodeSpan = document.getElementById('dailyCodeText');
+        const adminHint = document.getElementById('adminHint');
+        const adminPassInput = document.getElementById('adminPassInput');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminLinksPanel = document.getElementById('adminLinksPanel');
+        const adminLinksList = document.getElementById('adminLinksList');
+        const newLinkInput = document.getElementById('newLinkInput');
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        const userCodeInput = document.getElementById('userCodeInput');
+        const userUnlockBtn = document.getElementById('userUnlockBtn');
+        const userLinksList = document.getElementById('userLinksList');
+        const copyAllBtn = document.getElementById('copyAllBtn');
 
-    const currentDailyCode = getDailyCode();
-
-    // ---------- ОБНОВЛЕНИЕ UI ----------
-    function updateUI() {
-      // код
-      if (isAdmin) {
-        dailyCodeSpan.textContent = currentDailyCode;
-        dailyCodeSpan.style.filter = 'none';
-        adminHint.textContent = '🔓 код виден (админ)';
-        adminHint.style.color = '#7aa9d9';
-      } else {
-        dailyCodeSpan.textContent = '••••••';
-        dailyCodeSpan.style.filter = 'blur(4px)';
-        adminHint.textContent = '🔑 только для администратора';
-        adminHint.style.color = '#5b7696';
-      }
-
-      // ссылка
-      if (isUnlocked) {
-        targetLink.href = TARGET_URL;
-        targetLink.classList.remove('locked');
-        targetLink.classList.add('unlocked');
-        targetLink.textContent = TARGET_URL.length > 48 ? TARGET_URL.slice(0, 45) + '…' : TARGET_URL;
-        lockStatus.textContent = '🔓 unlocked';
-        lockStatus.classList.add('active');
-      } else {
-        targetLink.href = '#';
-        targetLink.classList.add('locked');
-        targetLink.classList.remove('unlocked');
-        targetLink.textContent = '🔒 моды заблокированы';
-        lockStatus.textContent = '🔒 locked';
-        lockStatus.classList.remove('active');
-      }
-    }
-
-    // ---------- АДМИН (только показывает код, НЕ разблокирует ссылку) ----------
-    function adminLogin() {
-      const inputPass = adminPassInput.value.trim();
-      if (inputPass === ADMIN_PASSWORD) {
-        isAdmin = true;
-        adminPassInput.value = '';
-        updateUI();
-        adminLoginBtn.style.background = '#1d4a3a';
-        adminLoginBtn.textContent = '✅ Код показан';
-        setTimeout(() => {
-          adminLoginBtn.style.background = '#1f344d';
-          adminLoginBtn.textContent = 'Войти как K1rFrOI';
-        }, 2000);
-      } else {
-        alert('Неверный код администратора.');
-        adminPassInput.value = '';
-        adminPassInput.focus();
-      }
-    }
-
-    // ---------- ПОЛЬЗОВАТЕЛЬ (разблокирует ссылку) ----------
-    function userUnlock() {
-      const userCode = userCodeInput.value.trim();
-      if (userCode === currentDailyCode) {
-        isUnlocked = true;
-        updateUI();
-        userCodeInput.value = '';
-        userUnlockBtn.style.background = '#1d4a3a';
-        userUnlockBtn.innerHTML = '✅ Доступ';
-        setTimeout(() => {
-          userUnlockBtn.style.background = '#1f344d';
-          userUnlockBtn.innerHTML = '🔓 Войти';
-        }, 1500);
-      } else {
-        alert('Неверный код. Попробуйте ещё раз.');
-        userCodeInput.value = '';
-        userCodeInput.focus();
-      }
-    }
-
-    // ---------- КОПИРОВАТЬ ----------
-    function copyLink() {
-      if (!isUnlocked) {
-        alert('🔒 Ссылка заблокирована. Сначала получите доступ.');
-        return;
-      }
-      const url = TARGET_URL;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(() => {
-          copyBtn.textContent = '✅ Скопировано!';
-          copyBtn.classList.add('copied');
-          setTimeout(() => {
-            copyBtn.textContent = '📋 Копировать';
-            copyBtn.classList.remove('copied');
-          }, 2000);
-        }).catch(() => {
-          fallbackCopy(url);
-        });
-      } else {
-        fallbackCopy(url);
-      }
-    }
-
-    function fallbackCopy(text) {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        copyBtn.textContent = '✅ Скопировано!';
-        copyBtn.classList.add('copied');
-        setTimeout(() => {
-          copyBtn.textContent = '📋 Копировать';
-          copyBtn.classList.remove('copied');
-        }, 2000);
-      } catch (e) {
-        alert('Не удалось скопировать. Скопируйте ссылку вручную.');
-      }
-      document.body.removeChild(textarea);
-    }
-
-    // ---------- ИНИЦИАЛИЗАЦИЯ ----------
-    function init() {
-      isAdmin = false;
-      isUnlocked = false;
-      updateUI();
-
-      adminLoginBtn.addEventListener('click', adminLogin);
-      adminPassInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') adminLogin();
-      });
-
-      userUnlockBtn.addEventListener('click', userUnlock);
-      userCodeInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') userUnlock();
-      });
-
-      copyBtn.addEventListener('click', copyLink);
-
-      targetLink.addEventListener('click', (e) => {
-        if (!isUnlocked) {
-          e.preventDefault();
-          alert('🔒 Ссылка заблокирована. Введите сегодняшний код для доступа.');
+        function getDailyCode() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
+            const base = dateStr + DAILY_SECRET;
+            let hash = 0;
+            for (let i = 0; i < base.length; i++) {
+                const char = base.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            let code = Math.abs(hash).toString();
+            while (code.length < 6) code = '0' + code;
+            return code.slice(0, 6);
         }
-      });
 
-      console.log('✅ Доступ к модам | By TRAIN_MAN | K1rFrOI');
-    }
+        const currentDailyCode = getDailyCode();
 
-    init();
-  })();
+        function saveLinks() {
+            try {
+                localStorage.setItem('mods_links', JSON.stringify(links));
+            } catch (e) {}
+        }
+
+        function loadLinks() {
+            try {
+                const saved = localStorage.getItem('mods_links');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        links = parsed;
+                        return;
+                    }
+                }
+            } catch (e) {}
+            links = [...DEFAULT_LINKS];
+        }
+
+        loadLinks();
+
+        function updateUI() {
+            if (isAdmin) {
+                dailyCodeSpan.textContent = currentDailyCode;
+                dailyCodeSpan.style.filter = 'none';
+                adminHint.textContent = '🔓 код виден (админ)';
+                adminHint.style.color = '#7aa9d9';
+                adminLinksPanel.classList.add('visible');
+            } else {
+                dailyCodeSpan.textContent = '••••••';
+                dailyCodeSpan.style.filter = 'blur(4px)';
+                adminHint.textContent = '🔑 только для администратора';
+                adminHint.style.color = '#5b7696';
+                adminLinksPanel.classList.remove('visible');
+            }
+
+            renderAdminLinks();
+            renderUserLinks();
+        }
+
+        function renderAdminLinks() {
+            if (!adminLinksList) return;
+            if (links.length === 0) {
+                adminLinksList.innerHTML = `<div class="no-links">Нет ссылок. Добавьте первую!</div>`;
+                return;
+            }
+            let html = '';
+            links.forEach((link, index) => {
+                html += `
+                    <div class="link-item" data-index="${index}">
+                        <span class="link-url-text">${index + 1}. ${link}</span>
+                        <div class="link-actions">
+                            <button class="edit-link-btn" data-index="${index}" title="Редактировать">✏️</button>
+                            <button class="delete-link-btn" data-index="${index}" title="Удалить">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            adminLinksList.innerHTML = html;
+
+            // Навешиваем обработчики на кнопки
+            document.querySelectorAll('.edit-link-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const index = parseInt(this.dataset.index);
+                    editLink(index);
+                });
+            });
+
+            document.querySelectorAll('.delete-link-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const index = parseInt(this.dataset.index);
+                    removeLink(index);
+                });
+            });
+        }
+
+        function renderUserLinks() {
+            if (!userLinksList) return;
+            if (links.length === 0) {
+                userLinksList.innerHTML = `<div class="no-links">Нет доступных ссылок</div>`;
+                return;
+            }
+            let html = '';
+            links.forEach((link, index) => {
+                const unlockedClass = isUnlocked ? 'unlocked' : 'locked';
+                const statusText = isUnlocked ? '🔓 доступна' : '🔒 заблокирована';
+                const statusClass = isUnlocked ? 'active' : '';
+                const displayText = isUnlocked ? link : '••••••••••••••••••••••••••••••••';
+                html += `
+                    <div class="link-item-display">
+                        <span class="link-num">${index + 1}.</span>
+                        <span class="link-url-text ${unlockedClass}">${displayText}</span>
+                        <span class="status-badge-small ${statusClass}">${statusText}</span>
+                        <button class="copy-single-btn" data-link="${link}" ${!isUnlocked ? 'disabled' : ''}>
+                            📋 Копировать
+                        </button>
+                    </div>
+                `;
+            });
+            userLinksList.innerHTML = html;
+
+            document.querySelectorAll('.copy-single-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!isUnlocked) {
+                        alert('🔒 Ссылки заблокированы. Сначала введите код доступа.');
+                        return;
+                    }
+                    const link = this.dataset.link;
+                    copyToClipboard(link, this);
+                });
+            });
+        }
+
+        function removeLink(index) {
+            if (!isAdmin) {
+                alert('Только для администратора!');
+                return;
+            }
+            if (index < 0 || index >= links.length) return;
+            if (confirm('Удалить эту ссылку?')) {
+                links.splice(index, 1);
+                saveLinks();
+                renderAdminLinks();
+                renderUserLinks();
+            }
+        }
+
+        function editLink(index) {
+            if (!isAdmin) {
+                alert('Только для администратора!');
+                return;
+            }
+            if (index < 0 || index >= links.length) return;
+            const newLink = prompt('Введите новую ссылку:', links[index]);
+            if (newLink !== null && newLink.trim() !== '') {
+                links[index] = newLink.trim();
+                saveLinks();
+                renderAdminLinks();
+                renderUserLinks();
+            }
+        }
+
+        function addLink() {
+            if (!isAdmin) {
+                alert('Только для администратора!');
+                return;
+            }
+            const newLink = newLinkInput.value.trim();
+            if (newLink === '') {
+                alert('Введите ссылку');
+                return;
+            }
+            if (!newLink.startsWith('http://') && !newLink.startsWith('https://')) {
+                if (!confirm('Ссылка не начинается с http:// или https://. Продолжить?')) return;
+            }
+            links.push(newLink);
+            newLinkInput.value = '';
+            saveLinks();
+            renderAdminLinks();
+            renderUserLinks();
+        }
+
+        function copyToClipboard(text, buttonElement) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopied(buttonElement);
+                }).catch(() => {
+                    fallbackCopy(text, buttonElement);
+                });
+            } else {
+                fallbackCopy(text, buttonElement);
+            }
+        }
+
+        function fallbackCopy(text, buttonElement) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showCopied(buttonElement);
+            } catch (e) {
+                alert('Не удалось скопировать: ' + text);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showCopied(buttonElement) {
+            if (!buttonElement) return;
+            const originalText = buttonElement.textContent;
+            buttonElement.textContent = '✅ Скопировано!';
+            buttonElement.classList.add('copied');
+            setTimeout(() => {
+                buttonElement.textContent = originalText;
+                buttonElement.classList.remove('copied');
+            }, 2000);
+        }
+
+        function copyAllLinks() {
+            if (!isUnlocked) {
+                alert('🔒 Ссылки заблокированы. Сначала введите код доступа.');
+                return;
+            }
+            if (links.length === 0) {
+                alert('Нет ссылок для копирования');
+                return;
+            }
+            const text = links.join('\n');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    copyAllBtn.textContent = '✅ Все скопированы!';
+                    setTimeout(() => {
+                        copyAllBtn.textContent = '📋 Копировать все';
+                    }, 2000);
+                }).catch(() => {
+                    fallbackCopy(text, copyAllBtn);
+                });
+            } else {
+                fallbackCopy(text, copyAllBtn);
+            }
+        }
+
+        function adminLogin() {
+            const inputPass = adminPassInput.value.trim();
+            if (inputPass === ADMIN_PASSWORD) {
+                isAdmin = true;
+                adminPassInput.value = '';
+                updateUI();
+                adminLoginBtn.style.background = '#1d4a3a';
+                adminLoginBtn.textContent = '✅ Админ';
+                setTimeout(() => {
+                    adminLoginBtn.style.background = '#1f344d';
+                    adminLoginBtn.textContent = 'Войти как K1rFrOI';
+                }, 2000);
+            } else {
+                alert('Неверный код администратора.');
+                adminPassInput.value = '';
+                adminPassInput.focus();
+            }
+        }
+
+        function userUnlock() {
+            const userCode = userCodeInput.value.trim();
+            if (userCode === currentDailyCode) {
+                isUnlocked = true;
+                updateUI();
+                userCodeInput.value = '';
+                userUnlockBtn.style.background = '#1d4a3a';
+                userUnlockBtn.innerHTML = '✅ Доступ';
+                setTimeout(() => {
+                    userUnlockBtn.style.background = '#1f344d';
+                    userUnlockBtn.innerHTML = '🔓 Войти';
+                }, 1500);
+            } else {
+                alert('Неверный код. Попробуйте ещё раз.');
+                userCodeInput.value = '';
+                userCodeInput.focus();
+            }
+        }
+
+        function init() {
+            isAdmin = false;
+            isUnlocked = false;
+            updateUI();
+
+            adminLoginBtn.addEventListener('click', adminLogin);
+            adminPassInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') adminLogin();
+            });
+
+            userUnlockBtn.addEventListener('click', userUnlock);
+            userCodeInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') userUnlock();
+            });
+
+            addLinkBtn.addEventListener('click', addLink);
+            newLinkInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') addLink();
+            });
+
+            copyAllBtn.addEventListener('click', copyAllLinks);
+
+            console.log('✅ Доступ к модам | By TRAIN_MAN | K1rFrOI');
+        }
+
+        init();
+    })();
 </script>
 </body>
 </html>
