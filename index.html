@@ -29,6 +29,7 @@
             padding: 28px 22px 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(80,130,200,0.15) inset;
             border: 1px solid rgba(255,255,255,0.03);
+            position: relative;
         }
         .header {
             display: flex;
@@ -597,9 +598,41 @@
             transition: opacity 0.3s ease;
             pointer-events: none;
         }
-        .toast.show {
-            opacity: 1;
+        .toast.show { opacity: 1; }
+
+        /* Пасхалка */
+        .easter-egg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 48px;
+            font-weight: 800;
+            color: #f0c040;
+            text-shadow: 0 0 30px #f0a020, 0 0 60px #f08020, 0 4px 20px rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
+            padding: 30px 50px;
+            border-radius: 30px;
+            border: 2px solid #f0a030;
+            z-index: 1000;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 2px;
         }
+        .easter-egg.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .easter-egg .beer {
+            display: inline-block;
+            animation: floatBeer 1.5s ease-in-out infinite;
+        }
+        @keyframes floatBeer {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
         @media (max-width: 460px) {
             .app { padding: 18px 14px 22px; }
             .header h1 { font-size: 18px; }
@@ -608,10 +641,17 @@
             .link-edit-row { flex-direction: column; }
             .link-edit-row button { height: 40px; }
             .link-item-display { flex-wrap: wrap; }
+            .easter-egg { font-size: 28px; padding: 20px 30px; white-space: normal; }
         }
     </style>
 </head>
 <body>
+
+<!-- Пасхалка -->
+<div class="easter-egg" id="easterEgg">
+    <span class="beer">🍺</span> K1rFrOI утонул в пиве <span class="beer">🍺</span>
+</div>
+
 <div class="app" id="app">
     <div class="header">
         <h1>📦 Доступ к модам <span>v2</span></h1>
@@ -687,8 +727,8 @@
         // ========== КОНФИГ ==========
         const ADMIN_PASSWORD = "1894561";
         const DAILY_SECRET = "K1rFrOI";
-        const REPO_OWNER = "Yura681";        // ← ЗАМЕНИТЕ НА СВОЙ ЛОГИН
-        const REPO_NAME = "mods-acsses";           // ← ЗАМЕНИТЕ НА НАЗВАНИЕ РЕПОЗИТОРИЯ
+        const REPO_OWNER = "Yura681";              // ← ВАШ ЛОГИН
+        const REPO_NAME = "mods-acsses";            // ← НАЗВАНИЕ РЕПОЗИТОРИЯ
         const FILE_PATH = "links.json";
         const BRANCH = "main";
 
@@ -697,6 +737,8 @@
         let isAdmin = false;
         let isUnlocked = false;
         let githubToken = null;
+        let clickCount = 0;
+        let clickTimer = null;
 
         // ========== DOM ==========
         const dailyCodeSpan = document.getElementById('dailyCodeText');
@@ -713,6 +755,32 @@
         const copyAllBtn = document.getElementById('copyAllBtn');
         const syncStatus = document.getElementById('syncStatus');
         const toast = document.getElementById('toast');
+        const easterEgg = document.getElementById('easterEgg');
+
+        // ========== ПАСХАЛКА ==========
+        function handleEasterEggClick(e) {
+            // Проверяем, что клик был по пустому месту (не по кнопкам, не по инпутам и т.д.)
+            const target = e.target;
+            if (target.closest('button') || target.closest('input') || target.closest('a') || target.closest('.link-item') || target.closest('.link-item-display')) {
+                return;
+            }
+
+            clickCount++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 1000);
+
+            if (clickCount >= 5) {
+                clickCount = 0;
+                easterEgg.classList.add('show');
+                setTimeout(() => {
+                    easterEgg.classList.remove('show');
+                }, 4000);
+            }
+        }
+
+        document.addEventListener('click', handleEasterEggClick);
 
         // ========== ГЕНЕРАЦИЯ КОДА ==========
         function getDailyCode() {
@@ -761,7 +829,6 @@
                 const response = await fetch(url, { headers: getGitHubHeaders() });
                 if (!response.ok) {
                     if (response.status === 404) {
-                        // Файла нет — создадим дефолтный
                         links = ["https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"];
                         await saveLinksToGitHub();
                         syncStatus.textContent = '☁️ создан';
@@ -782,7 +849,6 @@
             } catch (e) {
                 console.error('GitHub fetch error:', e);
                 syncStatus.textContent = '⚠️ офлайн';
-                // Используем локальные, если есть
                 const saved = localStorage.getItem('mods_links_backup');
                 if (saved) {
                     try {
@@ -804,7 +870,6 @@
         async function saveLinksToGitHub() {
             try {
                 syncStatus.textContent = '⏳ сохранение...';
-                // Сначала получаем SHA файла (если есть)
                 const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
                 let sha = null;
                 try {
@@ -835,14 +900,12 @@
                     throw new Error(err.message || 'Ошибка сохранения');
                 }
 
-                // Сохраняем бэкап локально
                 localStorage.setItem('mods_links_backup', JSON.stringify(links));
                 syncStatus.textContent = '☁️ синхр.';
                 showToast('✅ Ссылки сохранены в облако');
             } catch (e) {
                 console.error('GitHub save error:', e);
                 syncStatus.textContent = '⚠️ ошибка';
-                // Сохраняем локально
                 localStorage.setItem('mods_links_backup', JSON.stringify(links));
                 showToast('⚠️ Сохранено локально (ошибка облака)');
                 throw e;
@@ -969,6 +1032,7 @@
             await saveLinksToGitHub();
             renderAdminLinks();
             renderUserLinks();
+            showToast('🗑️ Ссылка удалена');
         }
 
         async function editLink(index) {
@@ -980,6 +1044,7 @@
                 await saveLinksToGitHub();
                 renderAdminLinks();
                 renderUserLinks();
+                showToast('✏️ Ссылка обновлена');
             }
         }
 
@@ -1075,7 +1140,6 @@
                     adminLoginBtn.style.background = '#1f344d';
                     adminLoginBtn.textContent = 'Войти как K1rFrOI';
                 }, 2000);
-                // Если токена нет — запросить
                 if (!githubToken) {
                     const savedToken = localStorage.getItem('github_token');
                     if (savedToken && savedToken.length > 10) {
@@ -1118,17 +1182,14 @@
             isAdmin = false;
             isUnlocked = false;
 
-            // Восстанавливаем токен
             const savedToken = localStorage.getItem('github_token');
             if (savedToken && savedToken.length > 10) {
                 githubToken = savedToken;
             }
 
-            // Загружаем ссылки
             await fetchLinksFromGitHub();
             updateUI();
 
-            // Слушатели
             adminLoginBtn.addEventListener('click', adminLogin);
             adminPassInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') adminLogin();
@@ -1146,7 +1207,6 @@
 
             copyAllBtn.addEventListener('click', copyAllLinks);
 
-            // Клик по статусу синхронизации для ручного обновления
             syncStatus.addEventListener('click', function() {
                 if (isAdmin) {
                     fetchLinksFromGitHub();
@@ -1154,10 +1214,10 @@
             });
 
             console.log('✅ Доступ к модам | By TRAIN_MAN | K1rFrOI');
-            console.log('📌 Для работы облачного хранилища нужно:');
-            console.log('1. Создать Personal Access Token (Settings → Developer settings → Tokens)');
-            console.log('2. Разрешение: repo (полный доступ)');
-            console.log('3. Ввести токен при первом входе как админ');
+            console.log('📌 Настройки репозитория:');
+            console.log(`   Владелец: ${REPO_OWNER}`);
+            console.log(`   Репозиторий: ${REPO_NAME}`);
+            console.log('🍺 Пасхалка: 5 кликов по пустому месту');
         }
 
         init();
