@@ -8,14 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background: #0b0e14;
             min-height: 100vh;
             display: flex;
@@ -25,20 +20,16 @@
             background-image: radial-gradient(circle at 20% 30%, #1a2a3f 0%, #0a0f16 90%);
             background-attachment: fixed;
         }
-
         .app {
             max-width: 560px;
             width: 100%;
             background: rgba(16, 22, 32, 0.78);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
             border-radius: 48px;
             padding: 28px 22px 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(80, 130, 200, 0.15) inset;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: 0.3s;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(80,130,200,0.15) inset;
+            border: 1px solid rgba(255,255,255,0.03);
         }
-
         .header {
             display: flex;
             justify-content: space-between;
@@ -47,17 +38,14 @@
             flex-wrap: wrap;
             gap: 8px 12px;
         }
-
         .header h1 {
             font-size: 22px;
             font-weight: 700;
             color: #d6eaff;
-            letter-spacing: -0.3px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
         .header h1 span {
             background: #1f3146;
             font-size: 14px;
@@ -65,9 +53,7 @@
             padding: 2px 16px;
             border-radius: 40px;
             color: #9cb9dd;
-            letter-spacing: 0.2px;
         }
-
         .header .byline {
             font-size: 13px;
             font-weight: 500;
@@ -76,54 +62,37 @@
             padding: 6px 18px;
             border-radius: 40px;
             border: 1px solid #2d4058;
-            letter-spacing: 0.2px;
         }
-
         .instructions {
-            background: rgba(10, 16, 26, 0.5);
+            background: rgba(10,16,26,0.5);
             border-radius: 24px;
             padding: 16px 18px;
             margin-bottom: 18px;
             border: 1px solid #2a3d55;
             border-left: 3px solid #4a7cb0;
         }
-
         .instructions h3 {
             color: #b8d0ec;
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-
         .instructions ol {
             color: #9bb2cf;
             font-size: 14px;
             line-height: 1.7;
             padding-left: 20px;
-            margin: 0;
         }
-
-        .instructions ol li {
-            padding: 2px 0;
-        }
-
-        .instructions ol li strong {
-            color: #c8defa;
-        }
-
+        .instructions ol li strong { color: #c8defa; }
         .code-display {
-            background: rgba(10, 16, 26, 0.7);
+            background: rgba(10,16,26,0.7);
             border-radius: 40px;
             padding: 20px 18px 18px;
             margin-bottom: 22px;
             border: 1px solid #2d3f54;
-            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
             text-align: center;
         }
-
         .code-display .label {
             font-size: 12px;
             text-transform: uppercase;
@@ -131,7 +100,6 @@
             color: #7a93b0;
             font-weight: 600;
         }
-
         .code-display .daily-code {
             font-size: 42px;
             font-weight: 700;
@@ -140,10 +108,8 @@
             margin-top: 6px;
             text-shadow: 0 0 20px #2f6aad55;
             font-family: 'Inter', monospace;
-            word-break: break-all;
             transition: 0.2s;
         }
-
         .code-display .hint {
             font-size: 12px;
             color: #5b7696;
@@ -154,15 +120,13 @@
             margin-top: 8px;
             border: 1px solid #26394e;
         }
-
         .admin-panel {
-            background: rgba(10, 16, 26, 0.5);
+            background: rgba(10,16,26,0.5);
             border-radius: 30px;
             padding: 18px 16px 16px;
             margin: 16px 0 18px;
             border: 1px solid #2d3f54;
         }
-
         .admin-panel .admin-title {
             font-size: 14px;
             font-weight: 600;
@@ -172,7 +136,6 @@
             align-items: center;
             gap: 10px;
         }
-
         .admin-panel .admin-title span {
             background: #1f3146;
             padding: 2px 16px;
@@ -180,13 +143,11 @@
             font-size: 12px;
             color: #b8d0ec;
         }
-
         .admin-row {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
-
         .admin-row input {
             flex: 2 1 140px;
             background: #0b121b;
@@ -199,20 +160,16 @@
             outline: none;
             transition: 0.2s;
             font-family: 'Inter', monospace;
-            letter-spacing: 0.5px;
         }
-
         .admin-row input:focus {
             border-color: #5b8bc9;
             box-shadow: 0 0 0 4px #1d3d6355;
         }
-
         .admin-row input::placeholder {
             color: #425a77;
             font-weight: 400;
             font-size: 14px;
         }
-
         .admin-row button {
             flex: 1 0 auto;
             background: #1f344d;
@@ -232,36 +189,27 @@
             justify-content: center;
             gap: 6px;
         }
-
         .admin-row button:active {
             transform: translateY(3px);
             box-shadow: 0 1px 0 #0a141f;
         }
-
         .admin-row button:hover {
             background: #2a4666;
             border-color: #5a84b0;
         }
-
         .admin-links-panel {
-            background: rgba(10, 16, 26, 0.5);
+            background: rgba(10,16,26,0.5);
             border-radius: 30px;
             padding: 18px 16px 16px;
             margin: 16px 0 18px;
             border: 1px solid #2d6a4a;
             display: none;
         }
-
-        .admin-links-panel.visible {
-            display: block;
-            animation: fadeUp 0.3s ease;
-        }
-
+        .admin-links-panel.visible { display: block; animation: fadeUp 0.3s ease; }
         @keyframes fadeUp {
             0% { opacity: 0.4; transform: translateY(8px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-
         .admin-links-panel .links-title {
             color: #86d4b0;
             font-size: 14px;
@@ -270,21 +218,27 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
-
         .admin-links-panel .links-title small {
             color: #5b8a7a;
             font-weight: 400;
             font-size: 12px;
         }
-
+        .admin-links-panel .sync-status {
+            font-size: 11px;
+            color: #5b8a7a;
+            background: #0b121b;
+            padding: 2px 12px;
+            border-radius: 40px;
+            border: 1px solid #1d3a30;
+        }
         .link-edit-row {
             display: flex;
             gap: 10px;
             margin-bottom: 10px;
             flex-wrap: wrap;
         }
-
         .link-edit-row input {
             flex: 1;
             background: #0b121b;
@@ -298,17 +252,14 @@
             font-family: 'Inter', sans-serif;
             min-width: 120px;
         }
-
         .link-edit-row input:focus {
             border-color: #4a9a7a;
             box-shadow: 0 0 0 3px #1d4d3d55;
         }
-
         .link-edit-row input::placeholder {
             color: #3a5a4a;
             font-size: 13px;
         }
-
         .link-edit-row button {
             background: #1a3d30;
             border: none;
@@ -327,47 +278,38 @@
             align-items: center;
             gap: 6px;
         }
-
         .link-edit-row button:active {
             transform: translateY(3px);
             box-shadow: 0 0px 0 #0a1f15;
         }
-
         .link-edit-row button:hover {
             background: #2a5a45;
             border-color: #3a8a6a;
         }
-
         .link-edit-row button.add-link {
             background: #1a3d3a;
             border-color: #2a6a5a;
         }
-
         .link-edit-row button.add-link:hover {
             background: #2a5a55;
             border-color: #3a8a7a;
         }
-
         .links-list {
             margin-top: 12px;
             max-height: 200px;
             overflow-y: auto;
         }
-
         .links-list::-webkit-scrollbar {
             width: 4px;
         }
-
         .links-list::-webkit-scrollbar-track {
             background: #0b121b;
             border-radius: 10px;
         }
-
         .links-list::-webkit-scrollbar-thumb {
             background: #2d5a4a;
             border-radius: 10px;
         }
-
         .link-item {
             display: flex;
             align-items: center;
@@ -378,7 +320,6 @@
             margin-bottom: 6px;
             border: 1px solid #1d3a30;
         }
-
         .link-item .link-url-text {
             flex: 1;
             font-size: 13px;
@@ -386,16 +327,13 @@
             word-break: break-all;
             font-family: 'Inter', monospace;
             user-select: none;
-            -webkit-user-select: none;
             filter: blur(4px);
             opacity: 0.7;
         }
-
         .link-item .link-actions {
             display: flex;
             gap: 6px;
         }
-
         .link-item .link-actions button {
             background: transparent;
             border: none;
@@ -406,25 +344,21 @@
             font-size: 13px;
             transition: 0.2s;
         }
-
         .link-item .link-actions button:hover {
             background: #1a2d25;
             color: #86d4b0;
         }
-
         .link-item .link-actions button.del:hover {
             background: #2a1a1a;
             color: #e87070;
         }
-
         .user-access {
-            background: rgba(10, 16, 26, 0.5);
+            background: rgba(10,16,26,0.5);
             border-radius: 30px;
             padding: 18px 16px 16px;
             margin: 16px 0 14px;
             border: 1px solid #2d3f54;
         }
-
         .user-access .user-title {
             display: flex;
             justify-content: space-between;
@@ -433,13 +367,11 @@
             flex-wrap: wrap;
             gap: 6px;
         }
-
         .user-access .user-title strong {
             color: #c2d7f2;
             font-weight: 500;
             font-size: 15px;
         }
-
         .user-access .user-title small {
             color: #6b87a6;
             font-size: 12px;
@@ -447,13 +379,11 @@
             padding: 2px 16px;
             border-radius: 40px;
         }
-
         .user-input-group {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
-
         .user-input-group input {
             flex: 2 1 140px;
             background: #0b121b;
@@ -466,20 +396,16 @@
             outline: none;
             transition: 0.2s;
             font-family: 'Inter', monospace;
-            letter-spacing: 0.5px;
         }
-
         .user-input-group input:focus {
             border-color: #5b8bc9;
             box-shadow: 0 0 0 4px #1d3d6355;
         }
-
         .user-input-group input::placeholder {
             color: #425a77;
             font-weight: 400;
             font-size: 14px;
         }
-
         .user-input-group button {
             flex: 1 0 auto;
             background: #1f344d;
@@ -499,25 +425,21 @@
             justify-content: center;
             gap: 6px;
         }
-
         .user-input-group button:active {
             transform: translateY(3px);
             box-shadow: 0 1px 0 #0a141f;
         }
-
         .user-input-group button:hover {
             background: #2a4666;
             border-color: #5a84b0;
         }
-
         .links-container {
-            background: rgba(10, 16, 26, 0.6);
+            background: rgba(10,16,26,0.6);
             border-radius: 30px;
             padding: 16px 16px 12px;
             margin: 18px 0 6px;
             border: 1px solid #2d3f54;
         }
-
         .links-container .links-header {
             display: flex;
             justify-content: space-between;
@@ -526,14 +448,11 @@
             flex-wrap: wrap;
             gap: 6px;
         }
-
         .links-container .links-header span {
             color: #7b96b5;
             font-size: 13px;
             font-weight: 600;
-            letter-spacing: 0.3px;
         }
-
         .links-container .links-header .copy-all-btn {
             background: #1f344d;
             border: none;
@@ -547,17 +466,14 @@
             border: 1px solid #3a5b7a;
             box-shadow: 0 2px 0 #0a141f;
         }
-
         .links-container .links-header .copy-all-btn:active {
             transform: translateY(2px);
             box-shadow: 0 0px 0 #0a141f;
         }
-
         .links-container .links-header .copy-all-btn:hover {
             background: #2a4666;
             border-color: #5a84b0;
         }
-
         .link-item-display {
             display: flex;
             align-items: center;
@@ -568,39 +484,32 @@
             margin-bottom: 8px;
             border: 1px solid #1d2f40;
         }
-
         .link-item-display .link-num {
             color: #4a6a8a;
             font-size: 12px;
             font-weight: 600;
             min-width: 24px;
         }
-
         .link-item-display .link-url-text {
             flex: 1;
             font-size: 13px;
             font-family: 'Inter', monospace;
             word-break: break-all;
             user-select: none;
-            -webkit-user-select: none;
             cursor: default;
-            position: relative;
         }
-
         .link-item-display .link-url-text.locked {
             color: #3a4a5a;
             filter: blur(6px);
             opacity: 0.5;
             pointer-events: none;
         }
-
         .link-item-display .link-url-text.unlocked {
             color: #b8d6ff;
             filter: blur(0px);
             opacity: 1;
             pointer-events: none;
         }
-
         .link-item-display .copy-single-btn {
             background: transparent;
             border: 1px solid #2d4058;
@@ -611,27 +520,22 @@
             cursor: pointer;
             transition: 0.2s;
             white-space: nowrap;
-            position: relative;
             z-index: 2;
         }
-
         .link-item-display .copy-single-btn:hover:not(:disabled) {
             background: #1a2d44;
             border-color: #4a7cb0;
             color: #cadeff;
         }
-
         .link-item-display .copy-single-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
         }
-
         .link-item-display .copy-single-btn.copied {
             background: #1a3d30;
             border-color: #2b7353;
             color: #86d4b0;
         }
-
         .link-item-display .status-badge-small {
             font-size: 10px;
             padding: 2px 10px;
@@ -641,35 +545,26 @@
             border: 1px solid #2a3a4a;
             white-space: nowrap;
         }
-
         .link-item-display .status-badge-small.active {
             background: #1a3d30;
             color: #86d4b0;
             border-color: #2b7353;
         }
-
         .no-links {
             color: #4a6a8a;
             font-size: 13px;
             text-align: center;
             padding: 12px 0;
         }
-
         .footer-note {
             text-align: center;
             margin-top: 22px;
             font-size: 12px;
             color: #405771;
-            letter-spacing: 0.4px;
             border-top: 1px solid #1d2b3b;
             padding-top: 18px;
         }
-
-        .footer-note span {
-            color: #6b8bb0;
-            font-weight: 500;
-        }
-
+        .footer-note span { color: #6b8bb0; font-weight: 500; }
         .status-badge {
             font-size: 12px;
             padding: 4px 14px;
@@ -677,23 +572,34 @@
             background: #1a283a;
             color: #819bb9;
             font-weight: 600;
-            letter-spacing: 0.3px;
             border: 1px solid #2d4058;
         }
-
         .status-badge.active {
             background: #1a3d30;
             color: #86d4b0;
             border-color: #2b7353;
         }
-
-        .no-select {
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2d44;
+            color: #d6eaff;
+            padding: 12px 24px;
+            border-radius: 60px;
+            border: 1px solid #3a5b7a;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
-
+        .toast.show {
+            opacity: 1;
+        }
         @media (max-width: 460px) {
             .app { padding: 18px 14px 22px; }
             .header h1 { font-size: 18px; }
@@ -717,7 +623,7 @@
         <ol>
             <li><strong>Спросите код</strong> перед съёмками или посмотрите его в канале <strong>"моды ебаные"</strong></li>
             <li><strong>Введите код</strong> в поле ниже и нажмите «Войти»</li>
-            <li><strong>Нажмите «Копировать»</strong> рядом со ссылкой, вставьте в адресную строку — готово! 🚀</li>
+            <li><strong>Нажмите «Копировать»</strong> рядом со ссылкой — готово! 🚀</li>
         </ol>
     </div>
 
@@ -728,9 +634,7 @@
     </div>
 
     <div class="admin-panel">
-        <div class="admin-title">
-            ⚙️ Администратор <span>k1rFrOI</span>
-        </div>
+        <div class="admin-title">⚙️ Администратор <span>k1rFrOI</span></div>
         <div class="admin-row">
             <input type="password" id="adminPassInput" placeholder="Код админа" autocomplete="off">
             <button id="adminLoginBtn">Войти как K1rFrOI</button>
@@ -739,7 +643,9 @@
 
     <div class="admin-links-panel" id="adminLinksPanel">
         <div class="links-title">
-            🔗 Управление ссылками <small>добавляй, удаляй, меняй</small>
+            🔗 Управление ссылками
+            <small>синхронизируются с облаком</small>
+            <span class="sync-status" id="syncStatus">☁️ синхр.</span>
         </div>
         <div class="link-edit-row">
             <input type="text" id="newLinkInput" placeholder="Вставьте ссылку..." autocomplete="off">
@@ -772,21 +678,27 @@
     </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
     (function() {
         "use strict";
 
+        // ========== КОНФИГ ==========
         const ADMIN_PASSWORD = "1894561";
         const DAILY_SECRET = "K1rFrOI";
+        const REPO_OWNER = "TRAINMAN1337";        // ← ЗАМЕНИТЕ НА СВОЙ ЛОГИН
+        const REPO_NAME = "mods-access";           // ← ЗАМЕНИТЕ НА НАЗВАНИЕ РЕПОЗИТОРИЯ
+        const FILE_PATH = "links.json";
+        const BRANCH = "main";
 
-        const DEFAULT_LINKS = [
-            "https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"
-        ];
-
-        let links = [...DEFAULT_LINKS];
+        // ========== СОСТОЯНИЕ ==========
+        let links = [];
         let isAdmin = false;
         let isUnlocked = false;
+        let githubToken = null;
 
+        // ========== DOM ==========
         const dailyCodeSpan = document.getElementById('dailyCodeText');
         const adminHint = document.getElementById('adminHint');
         const adminPassInput = document.getElementById('adminPassInput');
@@ -799,7 +711,10 @@
         const userUnlockBtn = document.getElementById('userUnlockBtn');
         const userLinksList = document.getElementById('userLinksList');
         const copyAllBtn = document.getElementById('copyAllBtn');
+        const syncStatus = document.getElementById('syncStatus');
+        const toast = document.getElementById('toast');
 
+        // ========== ГЕНЕРАЦИЯ КОДА ==========
         function getDailyCode() {
             const now = new Date();
             const year = now.getFullYear();
@@ -817,31 +732,143 @@
             while (code.length < 6) code = '0' + code;
             return code.slice(0, 6);
         }
-
         const currentDailyCode = getDailyCode();
 
-        function saveLinks() {
-            try {
-                localStorage.setItem('mods_links', JSON.stringify(links));
-            } catch (e) {}
+        // ========== TOAST ==========
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function loadLinks() {
+        // ========== РАБОТА С GITHUB ==========
+        function getGitHubHeaders() {
+            const headers = {
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            };
+            if (githubToken) {
+                headers['Authorization'] = `token ${githubToken}`;
+            }
+            return headers;
+        }
+
+        async function fetchLinksFromGitHub() {
             try {
-                const saved = localStorage.getItem('mods_links');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        links = parsed;
+                syncStatus.textContent = '⏳ загрузка...';
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
+                const response = await fetch(url, { headers: getGitHubHeaders() });
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        // Файла нет — создадим дефолтный
+                        links = ["https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"];
+                        await saveLinksToGitHub();
+                        syncStatus.textContent = '☁️ создан';
                         return;
                     }
+                    throw new Error(`Ошибка загрузки: ${response.status}`);
                 }
-            } catch (e) {}
-            links = [...DEFAULT_LINKS];
+                const data = await response.json();
+                const content = atob(data.content);
+                const parsed = JSON.parse(content);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    links = parsed;
+                } else {
+                    links = ["https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"];
+                }
+                syncStatus.textContent = '☁️ синхр.';
+                showToast('✅ Ссылки загружены из облака');
+            } catch (e) {
+                console.error('GitHub fetch error:', e);
+                syncStatus.textContent = '⚠️ офлайн';
+                // Используем локальные, если есть
+                const saved = localStorage.getItem('mods_links_backup');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            links = parsed;
+                        }
+                    } catch (_) {}
+                }
+                if (!links || links.length === 0) {
+                    links = ["https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"];
+                }
+                showToast('⚠️ Работаем в офлайн-режиме');
+            }
+            renderAdminLinks();
+            renderUserLinks();
         }
 
-        loadLinks();
+        async function saveLinksToGitHub() {
+            try {
+                syncStatus.textContent = '⏳ сохранение...';
+                // Сначала получаем SHA файла (если есть)
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
+                let sha = null;
+                try {
+                    const resp = await fetch(url, { headers: getGitHubHeaders() });
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        sha = data.sha;
+                    }
+                } catch (_) {}
 
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(links, null, 2))));
+                const payload = {
+                    message: `Обновление ссылок ${new Date().toLocaleString()}`,
+                    content: content,
+                    branch: BRANCH
+                };
+                if (sha) payload.sha = sha;
+
+                const method = sha ? 'PUT' : 'PUT';
+                const response = await fetch(url, {
+                    method: method,
+                    headers: getGitHubHeaders(),
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.message || 'Ошибка сохранения');
+                }
+
+                // Сохраняем бэкап локально
+                localStorage.setItem('mods_links_backup', JSON.stringify(links));
+                syncStatus.textContent = '☁️ синхр.';
+                showToast('✅ Ссылки сохранены в облако');
+            } catch (e) {
+                console.error('GitHub save error:', e);
+                syncStatus.textContent = '⚠️ ошибка';
+                // Сохраняем локально
+                localStorage.setItem('mods_links_backup', JSON.stringify(links));
+                showToast('⚠️ Сохранено локально (ошибка облака)');
+                throw e;
+            }
+        }
+
+        // ========== ЗАПРОС ТОКЕНА ==========
+        function requestToken() {
+            const token = prompt(
+                '🔑 Введите GitHub Personal Access Token (классический)\n' +
+                'Нужен для сохранения ссылок в облако.\n\n' +
+                'Как создать: Settings → Developer settings → Personal access tokens → Tokens (classic)\n' +
+                'Разрешения: repo (полный доступ)'
+            );
+            if (token && token.trim().length > 10) {
+                githubToken = token.trim();
+                localStorage.setItem('github_token', githubToken);
+                showToast('✅ Токен сохранён');
+                fetchLinksFromGitHub();
+            } else if (token !== null) {
+                alert('❌ Токен слишком короткий. Попробуйте ещё раз.');
+                requestToken();
+            }
+        }
+
+        // ========== UI ==========
         function updateUI() {
             if (isAdmin) {
                 dailyCodeSpan.textContent = currentDailyCode;
@@ -856,14 +883,13 @@
                 adminHint.style.color = '#5b7696';
                 adminLinksPanel.classList.remove('visible');
             }
-
             renderAdminLinks();
             renderUserLinks();
         }
 
         function renderAdminLinks() {
             if (!adminLinksList) return;
-            if (links.length === 0) {
+            if (!links || links.length === 0) {
                 adminLinksList.innerHTML = `<div class="no-links">Нет ссылок. Добавьте первую!</div>`;
                 return;
             }
@@ -881,7 +907,6 @@
             });
             adminLinksList.innerHTML = html;
 
-            // Навешиваем обработчики на кнопки
             document.querySelectorAll('.edit-link-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -889,7 +914,6 @@
                     editLink(index);
                 });
             });
-
             document.querySelectorAll('.delete-link-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -901,7 +925,7 @@
 
         function renderUserLinks() {
             if (!userLinksList) return;
-            if (links.length === 0) {
+            if (!links || links.length === 0) {
                 userLinksList.innerHTML = `<div class="no-links">Нет доступных ссылок</div>`;
                 return;
             }
@@ -936,55 +960,45 @@
             });
         }
 
-        function removeLink(index) {
-            if (!isAdmin) {
-                alert('Только для администратора!');
-                return;
-            }
+        // ========== УПРАВЛЕНИЕ ССЫЛКАМИ ==========
+        async function removeLink(index) {
+            if (!isAdmin) { alert('Только для администратора!'); return; }
             if (index < 0 || index >= links.length) return;
-            if (confirm('Удалить эту ссылку?')) {
-                links.splice(index, 1);
-                saveLinks();
-                renderAdminLinks();
-                renderUserLinks();
-            }
+            if (!confirm('Удалить эту ссылку?')) return;
+            links.splice(index, 1);
+            await saveLinksToGitHub();
+            renderAdminLinks();
+            renderUserLinks();
         }
 
-        function editLink(index) {
-            if (!isAdmin) {
-                alert('Только для администратора!');
-                return;
-            }
+        async function editLink(index) {
+            if (!isAdmin) { alert('Только для администратора!'); return; }
             if (index < 0 || index >= links.length) return;
             const newLink = prompt('Введите новую ссылку:', links[index]);
             if (newLink !== null && newLink.trim() !== '') {
                 links[index] = newLink.trim();
-                saveLinks();
+                await saveLinksToGitHub();
                 renderAdminLinks();
                 renderUserLinks();
             }
         }
 
-        function addLink() {
-            if (!isAdmin) {
-                alert('Только для администратора!');
-                return;
-            }
+        async function addLink() {
+            if (!isAdmin) { alert('Только для администратора!'); return; }
             const newLink = newLinkInput.value.trim();
-            if (newLink === '') {
-                alert('Введите ссылку');
-                return;
-            }
+            if (newLink === '') { alert('Введите ссылку'); return; }
             if (!newLink.startsWith('http://') && !newLink.startsWith('https://')) {
                 if (!confirm('Ссылка не начинается с http:// или https://. Продолжить?')) return;
             }
             links.push(newLink);
             newLinkInput.value = '';
-            saveLinks();
+            await saveLinksToGitHub();
             renderAdminLinks();
             renderUserLinks();
+            showToast('✅ Ссылка добавлена и сохранена в облако');
         }
 
+        // ========== КОПИРОВАНИЕ ==========
         function copyToClipboard(text, buttonElement) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
@@ -1029,7 +1043,7 @@
                 alert('🔒 Ссылки заблокированы. Сначала введите код доступа.');
                 return;
             }
-            if (links.length === 0) {
+            if (!links || links.length === 0) {
                 alert('Нет ссылок для копирования');
                 return;
             }
@@ -1048,6 +1062,7 @@
             }
         }
 
+        // ========== АВТОРИЗАЦИЯ ==========
         function adminLogin() {
             const inputPass = adminPassInput.value.trim();
             if (inputPass === ADMIN_PASSWORD) {
@@ -1060,6 +1075,18 @@
                     adminLoginBtn.style.background = '#1f344d';
                     adminLoginBtn.textContent = 'Войти как K1rFrOI';
                 }, 2000);
+                // Если токена нет — запросить
+                if (!githubToken) {
+                    const savedToken = localStorage.getItem('github_token');
+                    if (savedToken && savedToken.length > 10) {
+                        githubToken = savedToken;
+                        fetchLinksFromGitHub();
+                    } else {
+                        requestToken();
+                    }
+                } else {
+                    fetchLinksFromGitHub();
+                }
             } else {
                 alert('Неверный код администратора.');
                 adminPassInput.value = '';
@@ -1086,11 +1113,22 @@
             }
         }
 
-        function init() {
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        async function init() {
             isAdmin = false;
             isUnlocked = false;
+
+            // Восстанавливаем токен
+            const savedToken = localStorage.getItem('github_token');
+            if (savedToken && savedToken.length > 10) {
+                githubToken = savedToken;
+            }
+
+            // Загружаем ссылки
+            await fetchLinksFromGitHub();
             updateUI();
 
+            // Слушатели
             adminLoginBtn.addEventListener('click', adminLogin);
             adminPassInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') adminLogin();
@@ -1108,7 +1146,18 @@
 
             copyAllBtn.addEventListener('click', copyAllLinks);
 
+            // Клик по статусу синхронизации для ручного обновления
+            syncStatus.addEventListener('click', function() {
+                if (isAdmin) {
+                    fetchLinksFromGitHub();
+                }
+            });
+
             console.log('✅ Доступ к модам | By TRAIN_MAN | K1rFrOI');
+            console.log('📌 Для работы облачного хранилища нужно:');
+            console.log('1. Создать Personal Access Token (Settings → Developer settings → Tokens)');
+            console.log('2. Разрешение: repo (полный доступ)');
+            console.log('3. Ввести токен при первом входе как админ');
         }
 
         init();
