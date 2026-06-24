@@ -599,8 +599,6 @@
             pointer-events: none;
         }
         .toast.show { opacity: 1; }
-
-        /* Пасхалка */
         .easter-egg {
             position: fixed;
             top: 50%;
@@ -632,7 +630,6 @@
             0%, 100% { transform: translateY(0) rotate(-5deg); }
             50% { transform: translateY(-10px) rotate(5deg); }
         }
-
         @media (max-width: 460px) {
             .app { padding: 18px 14px 22px; }
             .header h1 { font-size: 18px; }
@@ -647,7 +644,6 @@
 </head>
 <body>
 
-<!-- Пасхалка -->
 <div class="easter-egg" id="easterEgg">
     <span class="beer">🍺</span> K1rFrOI утонул в пиве <span class="beer">🍺</span>
 </div>
@@ -684,7 +680,7 @@
     <div class="admin-links-panel" id="adminLinksPanel">
         <div class="links-title">
             🔗 Управление ссылками
-            <small>синхронизируются с облаком</small>
+            <small>сохраняются в облако</small>
             <span class="sync-status" id="syncStatus">☁️ синхр.</span>
         </div>
         <div class="link-edit-row">
@@ -724,23 +720,21 @@
     (function() {
         "use strict";
 
-        // ========== КОНФИГ ==========
+        // ========== НАСТРОЙКИ JSONBIN ==========
+        // ВАШИ ДАННЫЕ УЖЕ ВСТАВЛЕНЫ!
+        const JSONBIN_API_KEY = "$2a$10$zjU7o1YnsN2PDscg02C9p.zUciqX9R2FddzRG/dXdpP2i7Jq4SyV2";
+        const JSONBIN_BIN_ID = "6a3b6fb9f5f4af5e2927262c";
+
         const ADMIN_PASSWORD = "1894561";
         const DAILY_SECRET = "K1rFrOI";
-        const REPO_OWNER = "Yura681";              // ← ВАШ ЛОГИН
-        const REPO_NAME = "mods-acsses";            // ← НАЗВАНИЕ РЕПОЗИТОРИЯ
-        const FILE_PATH = "links.json";
-        const BRANCH = "main";
 
-        // ========== СОСТОЯНИЕ ==========
         let links = [];
         let isAdmin = false;
         let isUnlocked = false;
-        let githubToken = null;
         let clickCount = 0;
         let clickTimer = null;
 
-        // ========== DOM ==========
+        // DOM
         const dailyCodeSpan = document.getElementById('dailyCodeText');
         const adminHint = document.getElementById('adminHint');
         const adminPassInput = document.getElementById('adminPassInput');
@@ -758,29 +752,20 @@
         const easterEgg = document.getElementById('easterEgg');
 
         // ========== ПАСХАЛКА ==========
-        function handleEasterEggClick(e) {
-            // Проверяем, что клик был по пустому месту (не по кнопкам, не по инпутам и т.д.)
-            const target = e.target;
-            if (target.closest('button') || target.closest('input') || target.closest('a') || target.closest('.link-item') || target.closest('.link-item-display')) {
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('button') || e.target.closest('input') || e.target.closest('a') ||
+                e.target.closest('.link-item') || e.target.closest('.link-item-display')) {
                 return;
             }
-
             clickCount++;
             clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => {
-                clickCount = 0;
-            }, 1000);
-
-            if (clickCount >= 10) {
+            clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+            if (clickCount >= 5) {
                 clickCount = 0;
                 easterEgg.classList.add('show');
-                setTimeout(() => {
-                    easterEgg.classList.remove('show');
-                }, 4000);
+                setTimeout(() => easterEgg.classList.remove('show'), 4000);
             }
-        }
-
-        document.addEventListener('click', handleEasterEggClick);
+        });
 
         // ========== ГЕНЕРАЦИЯ КОДА ==========
         function getDailyCode() {
@@ -810,44 +795,27 @@
             toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // ========== РАБОТА С GITHUB ==========
-        function getGitHubHeaders() {
-            const headers = {
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-            };
-            if (githubToken) {
-                headers['Authorization'] = `token ${githubToken}`;
-            }
-            return headers;
-        }
-
-        async function fetchLinksFromGitHub() {
+        // ========== РАБОТА С JSONBIN ==========
+        async function loadLinks() {
             try {
                 syncStatus.textContent = '⏳ загрузка...';
-                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
-                const response = await fetch(url, { headers: getGitHubHeaders() });
-                if (!response.ok) {
-                    if (response.status === 404) {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.record && Array.isArray(data.record) && data.record.length > 0) {
+                        links = data.record;
+                    } else {
                         links = ["https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"];
-                        await saveLinksToGitHub();
-                        syncStatus.textContent = '☁️ создан';
-                        return;
                     }
-                    throw new Error(`Ошибка загрузки: ${response.status}`);
-                }
-                const data = await response.json();
-                const content = atob(data.content);
-                const parsed = JSON.parse(content);
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    links = parsed;
+                    syncStatus.textContent = '☁️ синхр.';
+                    showToast('✅ Ссылки загружены из облака');
                 } else {
-                    links = ["https://drive.google.com/drive/folders/1E8BP54rzPpZzwntqOslBTTPFS9aPnhz6?usp=drive_link"];
+                    throw new Error('Ошибка загрузки');
                 }
-                syncStatus.textContent = '☁️ синхр.';
-                showToast('✅ Ссылки загружены из облака');
             } catch (e) {
-                console.error('GitHub fetch error:', e);
+                console.error('Ошибка загрузки:', e);
                 syncStatus.textContent = '⚠️ офлайн';
                 const saved = localStorage.getItem('mods_links_backup');
                 if (saved) {
@@ -865,69 +833,32 @@
             }
             renderAdminLinks();
             renderUserLinks();
+            updateUI();
         }
 
-        async function saveLinksToGitHub() {
+        async function saveLinks() {
             try {
                 syncStatus.textContent = '⏳ сохранение...';
-                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
-                let sha = null;
-                try {
-                    const resp = await fetch(url, { headers: getGitHubHeaders() });
-                    if (resp.ok) {
-                        const data = await resp.json();
-                        sha = data.sha;
-                    }
-                } catch (_) {}
-
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(links, null, 2))));
-                const payload = {
-                    message: `Обновление ссылок ${new Date().toLocaleString()}`,
-                    content: content,
-                    branch: BRANCH
-                };
-                if (sha) payload.sha = sha;
-
-                const method = sha ? 'PUT' : 'PUT';
-                const response = await fetch(url, {
-                    method: method,
-                    headers: getGitHubHeaders(),
-                    body: JSON.stringify(payload)
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(links)
                 });
-
-                if (!response.ok) {
-                    const err = await response.json();
-                    throw new Error(err.message || 'Ошибка сохранения');
+                if (response.ok) {
+                    localStorage.setItem('mods_links_backup', JSON.stringify(links));
+                    syncStatus.textContent = '☁️ синхр.';
+                    showToast('✅ Ссылки сохранены в облако');
+                } else {
+                    throw new Error('Ошибка сохранения');
                 }
-
-                localStorage.setItem('mods_links_backup', JSON.stringify(links));
-                syncStatus.textContent = '☁️ синхр.';
-                showToast('✅ Ссылки сохранены в облако');
             } catch (e) {
-                console.error('GitHub save error:', e);
+                console.error('Ошибка сохранения:', e);
                 syncStatus.textContent = '⚠️ ошибка';
                 localStorage.setItem('mods_links_backup', JSON.stringify(links));
-                showToast('⚠️ Сохранено локально (ошибка облака)');
-                throw e;
-            }
-        }
-
-        // ========== ЗАПРОС ТОКЕНА ==========
-        function requestToken() {
-            const token = prompt(
-                '🔑 Введите GitHub Personal Access Token (классический)\n' +
-                'Нужен для сохранения ссылок в облако.\n\n' +
-                'Как создать: Settings → Developer settings → Personal access tokens → Tokens (classic)\n' +
-                'Разрешения: repo (полный доступ)'
-            );
-            if (token && token.trim().length > 10) {
-                githubToken = token.trim();
-                localStorage.setItem('github_token', githubToken);
-                showToast('✅ Токен сохранён');
-                fetchLinksFromGitHub();
-            } else if (token !== null) {
-                alert('❌ Токен слишком короткий. Попробуйте ещё раз.');
-                requestToken();
+                showToast('⚠️ Сохранено локально');
             }
         }
 
@@ -946,8 +877,6 @@
                 adminHint.style.color = '#5b7696';
                 adminLinksPanel.classList.remove('visible');
             }
-            renderAdminLinks();
-            renderUserLinks();
         }
 
         function renderAdminLinks() {
@@ -1023,68 +952,45 @@
             });
         }
 
-// ========== УПРАВЛЕНИЕ ССЫЛКАМИ (ИСПРАВЛЕННОЕ) ==========
-async function removeLink(index) {
-    if (!isAdmin) { 
-        alert('Только для администратора!'); 
-        return; 
-    }
-    if (index < 0 || index >= links.length) {
-        alert('Ошибка: ссылка не найдена');
-        return;
-    }
-    if (!confirm(`Удалить ссылку №${index + 1}?`)) return;
-    
-    try {
-        // Удаляем из массива
-        links.splice(index, 1);
-        
-        // Сохраняем в облако
-        await saveLinksToGitHub();
-        
-        // Обновляем интерфейс
-        renderAdminLinks();
-        renderUserLinks();
-        showToast('🗑️ Ссылка удалена');
-    } catch (e) {
-        console.error('Ошибка удаления:', e);
-        showToast('❌ Ошибка при удалении');
-        // Восстанавливаем ссылки из облака
-        await fetchLinksFromGitHub();
-    }
-}
+        // ========== УПРАВЛЕНИЕ ССЫЛКАМИ ==========
+        async function removeLink(index) {
+            if (!isAdmin) { alert('Только для администратора!'); return; }
+            if (index < 0 || index >= links.length) return;
+            if (!confirm('Удалить эту ссылку?')) return;
+            links.splice(index, 1);
+            await saveLinks();
+            renderAdminLinks();
+            renderUserLinks();
+            showToast('🗑️ Ссылка удалена');
+        }
 
-async function editLink(index) {
-    if (!isAdmin) { 
-        alert('Только для администратора!'); 
-        return; 
-    }
-    if (index < 0 || index >= links.length) {
-        alert('Ошибка: ссылка не найдена');
-        return;
-    }
-    
-    const newLink = prompt('Введите новую ссылку:', links[index]);
-    if (newLink === null) return; // Отмена
-    
-    const trimmed = newLink.trim();
-    if (trimmed === '') {
-        alert('Ссылка не может быть пустой');
-        return;
-    }
-    
-    try {
-        links[index] = trimmed;
-        await saveLinksToGitHub();
-        renderAdminLinks();
-        renderUserLinks();
-        showToast('✏️ Ссылка обновлена');
-    } catch (e) {
-        console.error('Ошибка редактирования:', e);
-        showToast('❌ Ошибка при редактировании');
-        await fetchLinksFromGitHub();
-    }
-}
+        async function editLink(index) {
+            if (!isAdmin) { alert('Только для администратора!'); return; }
+            if (index < 0 || index >= links.length) return;
+            const newLink = prompt('Введите новую ссылку:', links[index]);
+            if (newLink !== null && newLink.trim() !== '') {
+                links[index] = newLink.trim();
+                await saveLinks();
+                renderAdminLinks();
+                renderUserLinks();
+                showToast('✏️ Ссылка обновлена');
+            }
+        }
+
+        async function addLink() {
+            if (!isAdmin) { alert('Только для администратора!'); return; }
+            const newLink = newLinkInput.value.trim();
+            if (newLink === '') { alert('Введите ссылку'); return; }
+            if (!newLink.startsWith('http://') && !newLink.startsWith('https://')) {
+                if (!confirm('Ссылка не начинается с http:// или https://. Продолжить?')) return;
+            }
+            links.push(newLink);
+            newLinkInput.value = '';
+            await saveLinks();
+            renderAdminLinks();
+            renderUserLinks();
+            showToast('✅ Ссылка добавлена и сохранена в облако');
+        }
 
         // ========== КОПИРОВАНИЕ ==========
         function copyToClipboard(text, buttonElement) {
@@ -1163,17 +1069,7 @@ async function editLink(index) {
                     adminLoginBtn.style.background = '#1f344d';
                     adminLoginBtn.textContent = 'Войти как K1rFrOI';
                 }, 2000);
-                if (!githubToken) {
-                    const savedToken = localStorage.getItem('github_token');
-                    if (savedToken && savedToken.length > 10) {
-                        githubToken = savedToken;
-                        fetchLinksFromGitHub();
-                    } else {
-                        requestToken();
-                    }
-                } else {
-                    fetchLinksFromGitHub();
-                }
+                loadLinks();
             } else {
                 alert('Неверный код администратора.');
                 adminPassInput.value = '';
@@ -1201,17 +1097,11 @@ async function editLink(index) {
         }
 
         // ========== ИНИЦИАЛИЗАЦИЯ ==========
-        async function init() {
+        function init() {
             isAdmin = false;
             isUnlocked = false;
-
-            const savedToken = localStorage.getItem('github_token');
-            if (savedToken && savedToken.length > 10) {
-                githubToken = savedToken;
-            }
-
-            await fetchLinksFromGitHub();
             updateUI();
+            renderUserLinks();
 
             adminLoginBtn.addEventListener('click', adminLogin);
             adminPassInput.addEventListener('keydown', (e) => {
@@ -1232,14 +1122,13 @@ async function editLink(index) {
 
             syncStatus.addEventListener('click', function() {
                 if (isAdmin) {
-                    fetchLinksFromGitHub();
+                    loadLinks();
                 }
             });
 
             console.log('✅ Доступ к модам | By TRAIN_MAN | K1rFrOI');
-            console.log('📌 Настройки репозитория:');
-            console.log(`   Владелец: ${REPO_OWNER}`);
-            console.log(`   Репозиторий: ${REPO_NAME}`);
+            console.log('📌 Ваш JSONBin бин подключён:');
+            console.log(`   ID: ${JSONBIN_BIN_ID}`);
             console.log('🍺 Пасхалка: 5 кликов по пустому месту');
         }
 
