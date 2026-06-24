@@ -328,8 +328,11 @@
             word-break: break-all;
             font-family: 'Inter', monospace;
             user-select: none;
-            filter: blur(4px);
-            opacity: 0.7;
+        }
+        /* Для админа — без размытия */
+        .link-item .link-url-text.admin-view {
+            filter: none;
+            opacity: 1;
         }
         .link-item .link-actions {
             display: flex;
@@ -721,7 +724,6 @@
         "use strict";
 
         // ========== НАСТРОЙКИ JSONBIN ==========
-        // ВАШИ ДАННЫЕ УЖЕ ВСТАВЛЕНЫ!
         const JSONBIN_API_KEY = "$2a$10$zjU7o1YnsN2PDscg02C9p.zUciqX9R2FddzRG/dXdpP2i7Jq4SyV2";
         const JSONBIN_BIN_ID = "6a3b6fb9f5f4af5e2927262c";
 
@@ -859,6 +861,7 @@
                 syncStatus.textContent = '⚠️ ошибка';
                 localStorage.setItem('mods_links_backup', JSON.stringify(links));
                 showToast('⚠️ Сохранено локально');
+                throw e;
             }
         }
 
@@ -888,9 +891,10 @@
             }
             let html = '';
             links.forEach((link, index) => {
+                // Для админа показываем ссылки без размытия
                 html += `
                     <div class="link-item" data-index="${index}">
-                        <span class="link-url-text">${index + 1}. ${link}</span>
+                        <span class="link-url-text admin-view">${index + 1}. ${link}</span>
                         <div class="link-actions">
                             <button class="edit-link-btn" data-index="${index}" title="Редактировать">✏️</button>
                             <button class="delete-link-btn" data-index="${index}" title="Удалить">🗑️</button>
@@ -971,44 +975,96 @@
             });
         }
 
-        // ========== УПРАВЛЕНИЕ ССЫЛКАМИ ==========
+        // ========== УПРАВЛЕНИЕ ССЫЛКАМИ (ИСПРАВЛЕННОЕ) ==========
         async function removeLink(index) {
-            if (!isAdmin) { alert('Только для администратора!'); return; }
-            if (index < 0 || index >= links.length) return;
+            if (!isAdmin) { 
+                alert('Только для администратора!'); 
+                return; 
+            }
+            if (index < 0 || index >= links.length) {
+                alert('Ошибка: ссылка не найдена');
+                return;
+            }
             if (!confirm('Удалить эту ссылку?')) return;
-            links.splice(index, 1);
-            await saveLinks();
-            renderAdminLinks();
-            renderUserLinks();
-            showToast('🗑️ Ссылка удалена');
+            
+            try {
+                // Удаляем из массива
+                links.splice(index, 1);
+                
+                // Сохраняем в облако
+                await saveLinks();
+                
+                // Обновляем интерфейс
+                renderAdminLinks();
+                renderUserLinks();
+                showToast('🗑️ Ссылка удалена');
+            } catch (e) {
+                console.error('Ошибка удаления:', e);
+                showToast('❌ Ошибка при удалении');
+                // Восстанавливаем ссылки из облака
+                await loadLinks();
+            }
         }
 
         async function editLink(index) {
-            if (!isAdmin) { alert('Только для администратора!'); return; }
-            if (index < 0 || index >= links.length) return;
+            if (!isAdmin) { 
+                alert('Только для администратора!'); 
+                return; 
+            }
+            if (index < 0 || index >= links.length) {
+                alert('Ошибка: ссылка не найдена');
+                return;
+            }
+            
             const newLink = prompt('Введите новую ссылку:', links[index]);
-            if (newLink !== null && newLink.trim() !== '') {
-                links[index] = newLink.trim();
+            if (newLink === null) return;
+            
+            const trimmed = newLink.trim();
+            if (trimmed === '') {
+                alert('Ссылка не может быть пустой');
+                return;
+            }
+            
+            try {
+                links[index] = trimmed;
                 await saveLinks();
                 renderAdminLinks();
                 renderUserLinks();
                 showToast('✏️ Ссылка обновлена');
+            } catch (e) {
+                console.error('Ошибка редактирования:', e);
+                showToast('❌ Ошибка при редактировании');
+                await loadLinks();
             }
         }
 
         async function addLink() {
-            if (!isAdmin) { alert('Только для администратора!'); return; }
+            if (!isAdmin) { 
+                alert('Только для администратора!'); 
+                return; 
+            }
+            
             const newLink = newLinkInput.value.trim();
-            if (newLink === '') { alert('Введите ссылку'); return; }
+            if (newLink === '') { 
+                alert('Введите ссылку'); 
+                return; 
+            }
+            
             if (!newLink.startsWith('http://') && !newLink.startsWith('https://')) {
                 if (!confirm('Ссылка не начинается с http:// или https://. Продолжить?')) return;
             }
-            links.push(newLink);
-            newLinkInput.value = '';
-            await saveLinks();
-            renderAdminLinks();
-            renderUserLinks();
-            showToast('✅ Ссылка добавлена и сохранена в облако');
+            
+            try {
+                links.push(newLink);
+                newLinkInput.value = '';
+                await saveLinks();
+                renderAdminLinks();
+                renderUserLinks();
+                showToast('✅ Ссылка добавлена и сохранена в облако');
+            } catch (e) {
+                console.error('Ошибка добавления:', e);
+                showToast('❌ Ошибка при добавлении');
+            }
         }
 
         // ========== КОПИРОВАНИЕ ==========
@@ -1082,6 +1138,8 @@
                 isAdmin = true;
                 adminPassInput.value = '';
                 updateUI();
+                // Сразу перерисовываем админские ссылки без размытия
+                renderAdminLinks();
                 adminLoginBtn.style.background = '#1d4a3a';
                 adminLoginBtn.textContent = '✅ Админ';
                 setTimeout(() => {
