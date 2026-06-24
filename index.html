@@ -721,6 +721,7 @@
         "use strict";
 
         // ========== НАСТРОЙКИ JSONBIN ==========
+        // ВАШИ ДАННЫЕ УЖЕ ВСТАВЛЕНЫ!
         const JSONBIN_API_KEY = "$2a$10$zjU7o1YnsN2PDscg02C9p.zUciqX9R2FddzRG/dXdpP2i7Jq4SyV2";
         const JSONBIN_BIN_ID = "6a3b6fb9f5f4af5e2927262c";
 
@@ -876,7 +877,6 @@
                 adminHint.style.color = '#5b7696';
                 adminLinksPanel.classList.remove('visible');
             }
-            // === ВАЖНО: всегда перерисовываем ссылки для пользователей ===
             renderUserLinks();
         }
 
@@ -916,16 +916,32 @@
             });
         }
 
-        // ========== ОСНОВНОЕ ИСПРАВЛЕНИЕ: renderUserLinks() ==========
         function renderUserLinks() {
             if (!userLinksList) return;
+            
             if (!links || links.length === 0) {
-                userLinksList.innerHTML = `<div class="no-links">Нет доступных ссылок</div>`;
+                const placeholderLinks = [
+                    '••••••••••••••••••••••••••••••••',
+                    '••••••••••••••••••••••••••••••••',
+                    '••••••••••••••••••••••••••••••••'
+                ];
+                let html = '';
+                placeholderLinks.forEach((link, index) => {
+                    html += `
+                        <div class="link-item-display">
+                            <span class="link-num">${index + 1}.</span>
+                            <span class="link-url-text locked">${link}</span>
+                            <span class="status-badge-small">🔒 заблокирована</span>
+                            <button class="copy-single-btn" disabled>📋 Копировать</button>
+                        </div>
+                    `;
+                });
+                userLinksList.innerHTML = html;
                 return;
             }
+
             let html = '';
             links.forEach((link, index) => {
-                // === ГЛАВНОЕ: проверяем isUnlocked, а не isAdmin ===
                 const unlockedClass = isUnlocked ? 'unlocked' : 'locked';
                 const statusText = isUnlocked ? '🔓 доступна' : '🔒 заблокирована';
                 const statusClass = isUnlocked ? 'active' : '';
@@ -1080,14 +1096,12 @@
             }
         }
 
-        // ========== ПОЛЬЗОВАТЕЛЬ РАЗБЛОКИРОВЫВАЕТ ССЫЛКИ ==========
         function userUnlock() {
             const userCode = userCodeInput.value.trim();
             if (userCode === currentDailyCode) {
                 isUnlocked = true;
-                // === ВАЖНО: обновляем интерфейс и перерисовываем ссылки ===
                 updateUI();
-                renderUserLinks();  // <-- ЯВНО ПЕРЕРИСОВЫВАЕМ
+                renderUserLinks();
                 userCodeInput.value = '';
                 userUnlockBtn.style.background = '#1d4a3a';
                 userUnlockBtn.innerHTML = '✅ Доступ';
@@ -1106,9 +1120,10 @@
         function init() {
             isAdmin = false;
             isUnlocked = false;
-            updateUI();
-            // При загрузке показываем ссылки заблокированными
+            
             renderUserLinks();
+            loadLinks();
+            updateUI();
 
             adminLoginBtn.addEventListener('click', adminLogin);
             adminPassInput.addEventListener('keydown', (e) => {
