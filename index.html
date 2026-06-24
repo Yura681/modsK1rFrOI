@@ -328,9 +328,6 @@
             word-break: break-all;
             font-family: 'Inter', monospace;
             user-select: none;
-        }
-        /* Для админа — без размытия */
-        .link-item .link-url-text.admin-view {
             filter: none;
             opacity: 1;
         }
@@ -891,10 +888,9 @@
             }
             let html = '';
             links.forEach((link, index) => {
-                // Для админа показываем ссылки без размытия
                 html += `
                     <div class="link-item" data-index="${index}">
-                        <span class="link-url-text admin-view">${index + 1}. ${link}</span>
+                        <span class="link-url-text">${index + 1}. ${link}</span>
                         <div class="link-actions">
                             <button class="edit-link-btn" data-index="${index}" title="Редактировать">✏️</button>
                             <button class="delete-link-btn" data-index="${index}" title="Удалить">🗑️</button>
@@ -975,7 +971,7 @@
             });
         }
 
-        // ========== УПРАВЛЕНИЕ ССЫЛКАМИ (ИСПРАВЛЕННОЕ) ==========
+        // ========== УПРАВЛЕНИЕ ССЫЛКАМИ ==========
         async function removeLink(index) {
             if (!isAdmin) { 
                 alert('Только для администратора!'); 
@@ -988,20 +984,14 @@
             if (!confirm('Удалить эту ссылку?')) return;
             
             try {
-                // Удаляем из массива
                 links.splice(index, 1);
-                
-                // Сохраняем в облако
                 await saveLinks();
-                
-                // Обновляем интерфейс
                 renderAdminLinks();
                 renderUserLinks();
                 showToast('🗑️ Ссылка удалена');
             } catch (e) {
                 console.error('Ошибка удаления:', e);
                 showToast('❌ Ошибка при удалении');
-                // Восстанавливаем ссылки из облака
                 await loadLinks();
             }
         }
@@ -1138,7 +1128,6 @@
                 isAdmin = true;
                 adminPassInput.value = '';
                 updateUI();
-                // Сразу перерисовываем админские ссылки без размытия
                 renderAdminLinks();
                 adminLoginBtn.style.background = '#1d4a3a';
                 adminLoginBtn.textContent = '✅ Админ';
