@@ -876,7 +876,7 @@
                 adminHint.style.color = '#5b7696';
                 adminLinksPanel.classList.remove('visible');
             }
-            // Важно: обновляем пользовательские ссылки при любом изменении
+            // === ВАЖНО: всегда перерисовываем ссылки для пользователей ===
             renderUserLinks();
         }
 
@@ -1084,8 +1084,10 @@
         function userUnlock() {
             const userCode = userCodeInput.value.trim();
             if (userCode === currentDailyCode) {
-                isUnlocked = true;  // ← КЛЮЧЕВАЯ СТРОКА
+                isUnlocked = true;
+                // === ВАЖНО: обновляем интерфейс и перерисовываем ссылки ===
                 updateUI();
+                renderUserLinks();  // <-- ЯВНО ПЕРЕРИСОВЫВАЕМ
                 userCodeInput.value = '';
                 userUnlockBtn.style.background = '#1d4a3a';
                 userUnlockBtn.innerHTML = '✅ Доступ';
