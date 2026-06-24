@@ -721,7 +721,6 @@
         "use strict";
 
         // ========== НАСТРОЙКИ JSONBIN ==========
-        // ВАШИ ДАННЫЕ УЖЕ ВСТАВЛЕНЫ!
         const JSONBIN_API_KEY = "$2a$10$zjU7o1YnsN2PDscg02C9p.zUciqX9R2FddzRG/dXdpP2i7Jq4SyV2";
         const JSONBIN_BIN_ID = "6a3b6fb9f5f4af5e2927262c";
 
@@ -877,6 +876,8 @@
                 adminHint.style.color = '#5b7696';
                 adminLinksPanel.classList.remove('visible');
             }
+            // Важно: обновляем пользовательские ссылки при любом изменении
+            renderUserLinks();
         }
 
         function renderAdminLinks() {
@@ -915,6 +916,7 @@
             });
         }
 
+        // ========== ОСНОВНОЕ ИСПРАВЛЕНИЕ: renderUserLinks() ==========
         function renderUserLinks() {
             if (!userLinksList) return;
             if (!links || links.length === 0) {
@@ -923,6 +925,7 @@
             }
             let html = '';
             links.forEach((link, index) => {
+                // === ГЛАВНОЕ: проверяем isUnlocked, а не isAdmin ===
                 const unlockedClass = isUnlocked ? 'unlocked' : 'locked';
                 const statusText = isUnlocked ? '🔓 доступна' : '🔒 заблокирована';
                 const statusClass = isUnlocked ? 'active' : '';
@@ -1077,10 +1080,11 @@
             }
         }
 
+        // ========== ПОЛЬЗОВАТЕЛЬ РАЗБЛОКИРОВЫВАЕТ ССЫЛКИ ==========
         function userUnlock() {
             const userCode = userCodeInput.value.trim();
             if (userCode === currentDailyCode) {
-                isUnlocked = true;
+                isUnlocked = true;  // ← КЛЮЧЕВАЯ СТРОКА
                 updateUI();
                 userCodeInput.value = '';
                 userUnlockBtn.style.background = '#1d4a3a';
@@ -1101,6 +1105,7 @@
             isAdmin = false;
             isUnlocked = false;
             updateUI();
+            // При загрузке показываем ссылки заблокированными
             renderUserLinks();
 
             adminLoginBtn.addEventListener('click', adminLogin);
